@@ -8,7 +8,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng projects/ngxe/e2e",
-    "demo:xi": "ng run demo:extract-i18n"
+    "demo:xi": "ng run demo:extract-i18n",
+    "backend:start": "node dist/backend/app",
+    "backend:build": "tsc --project ./projects/backend/tsconfig.json",
+    "backend:build:watch": "rimraf ./dist/backend && tsc --project ./projects/backend/tsconfig.json --watch"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +24,7 @@
     "@angular/platform-browser": "~11.0.9",
     "@angular/platform-browser-dynamic": "~11.0.9",
     "@angular/router": "~11.0.9",
+    "fastify": "^3.10.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
