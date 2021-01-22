@@ -1,3 +1,13 @@
 {
-  "source": "messages.xlf"
+  "name": "ngxe demo",
+  "source": {
+    "locale": "en-US",
+    "path": "messages.xlf"
+  },
+  "translations": [
+    {
+      "locale": "uk-UA",
+      "path": "messages.uk.xlf"
+    }
+  ]
 }

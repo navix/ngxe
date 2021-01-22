@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en-US" datatype="plaintext" original="ng2.template">
-    <body>
-      <trans-unit id="7775616172860357796" datatype="html">
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-US">
+  <file id="ngi18n" original="ng.template">
+    <unit id="7775616172860357796">
+      <notes>
+        <note category="location">projects/demo/src/app/app.component.ts:9</note>
+      </notes>
+      <segment>
         <source>Localize msg</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">projects/demo/src/app/app.component.ts</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="LOC_MGS_ID" datatype="html">
+      </segment>
+    </unit>
+    <unit id="LOC_MGS_ID">
+      <notes>
+        <note category="location">projects/demo/src/app/app.component.ts:11</note>
+      </notes>
+      <segment>
         <source>Localize with ID</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">projects/demo/src/app/app.component.ts</context>
-          <context context-type="linenumber">11</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="6905e6216f1dbb765aeb9dbfc5278c1f5f3861c3" datatype="html">
+      </segment>
+    </unit>
+    <unit id="7550278962652999906">
+      <notes>
+        <note category="location">projects/demo/src/app/app.component.html:2</note>
+      </notes>
+      <segment>
         <source>Text sample</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">projects/demo/src/app/app.component.html</context>
-          <context context-type="linenumber">2</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="15d545ffe1af15f7fa79bab0fd137dc05805d4e7" datatype="html">
+      </segment>
+    </unit>
+    <unit id="9029508364748807640">
+      <notes>
+        <note category="location">projects/demo/src/app/app.component.html:3</note>
+        <note category="location">projects/demo/src/app/app.component.html:4</note>
+      </notes>
+      <segment>
         <source>Text with double</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">projects/demo/src/app/app.component.html</context>
-          <context context-type="linenumber">3</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">projects/demo/src/app/app.component.html</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="MSG_ID" datatype="html">
+      </segment>
+    </unit>
+    <unit id="MSG_ID">
+      <notes>
+        <note category="location">projects/demo/src/app/app.component.html:5</note>
+      </notes>
+      <segment>
         <source>Text sample with ID</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">projects/demo/src/app/app.component.html</context>
-          <context context-type="linenumber">5</context>
-        </context-group>
-      </trans-unit>
-    </body>
+      </segment>
+    </unit>
   </file>
 </xliff>

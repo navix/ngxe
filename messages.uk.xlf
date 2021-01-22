@@ -1,0 +1,39 @@
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-US" trgLang="uk">
+  <file id="ngi18n">
+    <unit id="7775616172860357796">
+      <segment>
+        <source>Localize msg</source>
+        <target>undefined</target>
+        <note>projects/demo/src/app/app.component.ts:9</note>
+      </segment>
+    </unit>
+    <unit id="LOC_MGS_ID">
+      <segment>
+        <source>Localize with ID</source>
+        <target>undefined</target>
+        <note>projects/demo/src/app/app.component.ts:11</note>
+      </segment>
+    </unit>
+    <unit id="7550278962652999906">
+      <segment>
+        <source>Text sample</source>
+        <target>kokokcfco</target>
+        <note>projects/demo/src/app/app.component.html:2</note>
+      </segment>
+    </unit>
+    <unit id="9029508364748807640">
+      <segment>
+        <source>Text with double</source>
+        <target>undefined</target>
+        <note>projects/demo/src/app/app.component.html:4</note>
+      </segment>
+    </unit>
+    <unit id="MSG_ID">
+      <segment>
+        <source>Text sample with ID</source>
+        <target>undefined</target>
+        <note>projects/demo/src/app/app.component.html:5</note>
+      </segment>
+    </unit>
+  </file>
+</xliff>

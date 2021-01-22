@@ -3,13 +3,15 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "ngxe:start": "ng run ngxe:serve",
+    "ngxe:start": "ng run ngxe:serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng projects/ngxe/e2e",
+    "demo:start": "ng run demo:serve",
+    "demo:start:uk": "ng run demo:serve:uk",
     "demo:xi": "ng run demo:extract-i18n",
-    "backend:start": "node dist/backend/app",
+    "backend:start": "node dist/backend/projects/backend/app",
     "backend:build": "tsc --project ./projects/backend/tsconfig.json",
     "backend:build:watch": "rimraf ./dist/backend && tsc --project ./projects/backend/tsconfig.json --watch"
   },
@@ -27,6 +29,7 @@
     "fastify": "^3.10.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "xliff": "^5.3.1",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
