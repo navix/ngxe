@@ -1,0 +1,15 @@
+{
+  "locale": "en-US",
+  "translations": {
+    "MSG_ID": "Text sample with ID",
+    "MSG_ID2": "Text sample with ID2",
+    "9029508364748807640": "Text with double",
+    "7550278962652999906": "Text sample",
+    "andId": "Text with double",
+    "8957338311241879290": "Text with interpol--{$INTERPOLATION}--ation foo foo",
+    "LOC_MGS_ID3": "Localize msg",
+    "LOC_MGS_ID": "Localize with ID",
+    "7775616172860357796": "Localize msg",
+    "CSV_EXPORT_TOO_MANY_LINES_TEXT": "It is not supported to retrieve more than {$maxLinesCount} lines. Please define some filters or redefine your search to retrieve all searched rows."
+  }
+}

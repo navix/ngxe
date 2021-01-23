@@ -1,10 +1,11 @@
 import fastify from 'fastify';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
-import xliff from 'xliff';
 import { Api_GetProject } from '../../meta/api';
 import { Config } from '../../meta/config';
-import { XliffFile } from '../../meta/xliff';
+import { JsonFile } from '../../meta/formats';
+import { loadJson } from './load-json';
+import { saveJson } from './save-json';
 
 const config: Config = JSON.parse(readFileSync(resolve('ngxe.json'), {encoding: 'UTF8'}));
 console.log('Config', config);
@@ -16,41 +17,32 @@ const app = fastify({
 
 app.register(async app => {
   app.get('/api/project', async (): Promise<Api_GetProject> => {
+    const input = loadJson(config.input);
+    if (!input) {
+      throw Error('Input file not loaded!');
+    }
     return {
       config,
+      input,
+      output: {
+        source: loadJson(config.output.source) ?? {locale: input.locale, translations: {}},
+        translations: config.output.translations.map(t => loadJson(t.path) ?? {locale: t.locale, translations: {}}),
+      },
     };
   });
 
-  app.get('/api/source', async (): Promise<XliffFile> => {
-    const raw = readFileSync(resolve(config.source.path), {encoding: 'UTF8'});
-    return await xliff.xliff2js(raw);
-  });
-
-  app.get<{Params: {locale: string}}>(
-    '/api/translation/:locale',
-    async (req): Promise<XliffFile | false> => {
-      const translation = config.translations.find(t => t.locale === req.params.locale);
-      if (!translation) {
-        throw Error(`Translation for ${req.params.locale} is not defined in ngxe.json`);
-      }
-      const path = resolve(translation.path);
-      if (existsSync(path)) {
-        const raw = readFileSync(path, {encoding: 'UTF8'});
-        return await xliff.xliff2js(raw);
-      } else {
-        return false;
-      }
-    });
-
-  app.post<{Params: {locale: string}, Body: XliffFile}>(
-    '/api/translation/:locale',
+  app.post<{Body: Api_GetProject}>(
+    '/api/project',
     async (req) => {
-      const translation = config.translations.find(t => t.locale === req.params.locale);
-      if (!translation) {
-        throw Error(`Translation for ${req.params.locale} is not defined in ngxe.json`);
+      console.log('POST PROJ', req.body);
+      saveJson(config.output.source, req.body.input);
+      for (const translation of config.output.translations) {
+        const data = req.body.output.translations.find(t => t.locale === translation.locale);
+        if (!data) {
+          throw Error(`Translation file (${translation.locale}) not found in payload`);
+        }
+        saveJson(translation.path, data);
       }
-      const xml = await xliff.js2xliff(req.body);
-      writeFileSync(resolve(translation.path), xml);
       return true;
     });
 });

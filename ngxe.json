@@ -1,13 +1,13 @@
 {
   "name": "ngxe demo",
-  "source": {
-    "locale": "en-US",
-    "path": "messages.xlf"
-  },
-  "translations": [
-    {
-      "locale": "uk-UA",
-      "path": "messages.uk.xlf"
-    }
-  ]
+  "input": "messages.json",
+  "output": {
+    "source": "messages.en.json",
+    "translations": [
+      {
+        "locale": "uk",
+        "path": "messages.uk.json"
+      }
+    ]
+  }
 }

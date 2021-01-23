@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { finalize, switchMap } from 'rxjs/operators';
-import { Api_GetProject, Api_GetSource, Api_GetTranslation } from '../../../../meta/api';
-import { XliffFile } from '../../../../meta/xliff';
+import { finalize } from 'rxjs/operators';
+import { Api_GetProject } from '../../../../meta/api';
+import { JsonFile } from '../../../../meta/formats';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +14,7 @@ export class AppComponent implements OnInit {
 
   project?: Api_GetProject;
 
-  source?: XliffFile;
-
-  translation?: XliffFile;
+  currentTranslation?: JsonFile;
 
   constructor(
     private http: HttpClient,
@@ -28,45 +26,42 @@ export class AppComponent implements OnInit {
     this.http
       .get<Api_GetProject>('/api/project')
       .pipe(
-        switchMap(res => {
-          this.project = res;
-          return this.http.get<Api_GetSource>('/api/source');
-        }),
         finalize(() => this.loading = false),
       )
       .subscribe(res => {
-        this.source = res;
+        this.project = res;
       });
   }
 
-  saveTranslation() {
-    console.log('TRNSL', this.translation);
+  save() {
     this.http
-      .post(`/api/translation/${this.translation?.targetLanguage}`, this.translation)
+      .post(`/api/project`, this.project)
       .subscribe(res => {
         if (res) {
-          alert(`${this.translation?.targetLanguage} saved.`);
+          alert(`Project saved.`);
         } else {
           alert('Save failed!');
         }
       });
   }
 
-  loadTranslation(locale: string) {
-    this.http
-      .get<Api_GetTranslation>(`/api/translation/${locale}`)
-      .subscribe(res => {
-        console.log('RES', res);
-        if (res) {
-          this.translation = res;
-        } else {
-          this.translation = JSON.parse(JSON.stringify(this.source));
-          if (!this.translation) {
-            throw Error('Source deep copy failed');
-          }
-          this.translation.targetLanguage = locale;
-          console.log('TRNSL', this.translation);
-        }
-      });
-  }
+//
+//  loadTranslation(locale: string) {
+//    this.http
+//      .get<Api_GetTranslation>(`/api/translation/${locale}`)
+//      .subscribe(res => {
+//        console.log('RES', res);
+//        if (res) {
+//          this.translation = res;
+//        } else {
+//          this.translation = JSON.parse(JSON.stringify(this.source));
+//          if (!this.translation) {
+//            throw Error('Source deep copy failed');
+//          }
+//          this.translation.targetLanguage = locale;
+//          console.log('TRNSL', this.translation);
+//        }
+//      });
+//  }
+
 }

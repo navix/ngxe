@@ -11,3 +11,12 @@ export interface XliffFile {
     };
   };
 }
+
+export interface JsonFile {
+  locale: string;
+  translations: JsonFileTranslations;
+}
+
+export interface JsonFileTranslations {
+  [key: string]: string;
+}

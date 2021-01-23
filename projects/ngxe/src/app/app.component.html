@@ -1,41 +1,50 @@
 <ng-container *ngIf="project">
   <h1>ngxe — {{ project.config.name }}</h1>
-  <div *ngIf="source">
-    {{ source | json }}
+  <div *ngIf="project">
     <div>
       <button
-        (click)="loadTranslation(translation.locale)"
-        *ngFor="let translation of project.config.translations"
+        (click)="currentTranslation = translation"
+        *ngFor="let translation of project.output.translations"
       >
         {{ translation.locale }}
       </button>
-    </div>
-    <div *ngIf="translation">
-      <button (click)="saveTranslation()">Save {{ translation.targetLanguage }}</button>
+      <button (click)="save()">SAVE</button>
     </div>
     <table>
       <thead>
       <tr>
         <th>ID</th>
-        <th>Source</th>
-        <ng-container *ngIf="translation">
+        <th>Current Source</th>
+        <th>Prev Source</th>
+        <ng-container *ngIf="currentTranslation">
           <th>
-            Target
+            Target ({{ currentTranslation.locale }})
           </th>
         </ng-container>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let unit of source.resources.ngi18n | keyvalue">
+      <tr *ngFor="let unit of project.input.translations | keyvalue">
         <td>{{ unit.key }}</td>
-        <td>{{ unit.value.source }}</td>
-        <ng-container *ngIf="translation">
-          <td>
-            <input type="text" [(ngModel)]="translation.resources.ngi18n[unit.key].target">
-          </td>
-        </ng-container>
+        <td>{{ unit.value }}</td>
+        <td>
+          <ng-container *ngIf="project.output.source">
+            {{ project.output.source.translations[unit.key] }}
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngIf="currentTranslation">
+            <input
+              [(ngModel)]="currentTranslation.translations[unit.key]"
+              type="text"
+            >
+          </ng-container>
+        </td>
       </tr>
       </tbody>
     </table>
   </div>
+  <pre>
+    {{ project | json }}
+  </pre>
 </ng-container>

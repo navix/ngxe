@@ -1,10 +1,16 @@
 <div>
+  <div i18n="@@MSG_ID">Text sample with ID</div>
+  <div i18n="@@MSG_ID2">Text sample with ID2</div>
+  <div i18n>Text with double</div>
   <div i18n>Text sample</div>
   <div i18n>Text with double</div>
-  <div i18n>Text with double</div>
-  <div i18n="@@MSG_ID">Text sample with ID</div>
+  <div i18n="i18n_dEscription">Text with double</div>
+  <div i18n="i18n_dEscription with oidi@@andId">Text with double</div>
 </div>
 <div>
   <button (click)="clearLang()">Clear lang</button>
   <button (click)="setLang('uk-UA')">Set lang = uk</button>
+</div>
+<div>
+  <div i18n>Text with interpol--{{ title3 }}--ation foo foo</div>
 </div>

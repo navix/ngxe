@@ -1,10 +1,11 @@
 export interface Config {
   name: string;
-  source: ConfigLocale;
-  translations: ConfigLocale[];
-}
-
-export interface ConfigLocale {
-  locale: string;
-  path: string;
+  input: string;
+  output: {
+    source: string;
+    translations: {
+      locale: string;
+      path: string;
+    }[];
+  };
 }
