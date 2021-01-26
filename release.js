@@ -7,6 +7,7 @@ fse.copySync('dist/backend', 'dist/release/backend');
 fse.copySync('dist/ngxe', 'dist/release/ngxe');
 fse.copySync('bin', 'dist/release/bin');
 fse.copySync('package-release.json', 'dist/release/package.json');
+fse.copySync('README.md', 'dist/release/README.md');
 
 // Publish
 const pkg = require('./package-release.json');
