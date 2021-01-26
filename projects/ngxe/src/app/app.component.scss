@@ -1,0 +1,36 @@
+.table {
+  --border-color: #d0d0d0;
+  border: 1px solid var(--border-color);
+  border-collapse: collapse;
+  font-size: .8rem;
+  width: 100%;
+  tr {
+    &.-same {
+      td {
+        color: #333333;
+      }
+    }
+    &.-new {
+      td {
+        background: #d6ffd6;
+      }
+    }
+    &.-changed {
+      td {
+        background: #ffedb1;
+      }
+    }
+    &.-deleted {
+      td {
+        background: #ffe0ea;
+      }
+    }
+    &:hover td {
+      background: #f5f5f5;
+    }
+  }
+  td, th {
+    border: 1px solid var(--border-color);
+    padding: .25rem .5rem;
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@novyk/ngxe",
+  "version": "1.0.0-beta.5",
+  "description": "Angular 11.1+ JSON Translations Editor.",
+  "author": {
+    "name": "Oleksa Novyk",
+    "email": "inavix@gmail.com",
+    "url": "https://oleksanovyk.com/"
+  },
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/navix/ngxe",
+    "type": "git"
+  },
+  "bin": {
+    "ngxe": "./bin/ngxe"
+  },
+  "dependencies": {
+    "fastify": "^3.10.1",
+    "fastify-static": "^3.4.0",
+    "open": "^7.3.1"
+  }
+}

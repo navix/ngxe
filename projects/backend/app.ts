@@ -1,22 +1,24 @@
 import fastify from 'fastify';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
+import * as open from 'open';
 import { resolve } from 'path';
-import { Api_GetProject } from '../../meta/api';
-import { Config } from '../../meta/config';
-import { JsonFile } from '../../meta/formats';
+import { Api_GetProject } from '../meta/api';
+import { Config } from '../meta/config';
 import { loadJson } from './load-json';
 import { saveJson } from './save-json';
 
+// @todo check ngxe.json exist and show proper error
 const config: Config = JSON.parse(readFileSync(resolve('ngxe.json'), {encoding: 'UTF8'}));
-console.log('Config', config);
 
 const app = fastify({
+  // @todo do not show API logs on prod
   logger: true,
   bodyLimit: 10 * 1000000, // X * MB
 });
 
 app.register(async app => {
   app.get('/api/project', async (): Promise<Api_GetProject> => {
+    // @todo properly check any file
     const input = loadJson(config.input);
     if (!input) {
       throw Error('Input file not loaded!');
@@ -47,9 +49,19 @@ app.register(async app => {
     });
 });
 
-app.listen('7600', '0.0.0.0', (err, address) => {
+app.register(require('fastify-static'), {
+  root: resolve(__dirname, '../../ngxe'),
+  prefix: '/ngxe/',
+});
+
+const port = 7600;
+const url = `http://localhost:${port}/ngxe/index.html`;
+app.listen(port, '0.0.0.0', (err) => {
   if (err) {
     throw err;
   }
-  app.log.info(`ngxe backend listening on ${address}`);
+  app.log.info(`ngxe working on ${url}`);
+  // @todo if prod
+  open(url).then(() => {
+  });
 });

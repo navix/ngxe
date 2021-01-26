@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
-import { JsonFile } from '../../meta/formats';
+import { JsonFile } from '../meta/formats';
 import { sortTranslations } from './sort-translations';
 
 export function loadJson(path: string): JsonFile | undefined {

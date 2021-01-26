@@ -1,6 +1,6 @@
 <ng-container *ngIf="project">
-  <h1>ngxe — {{ project.config.name }}</h1>
-  <div *ngIf="project">
+  <h1>{{ project.config.name }}</h1>
+  <div *ngIf="project" class="project">
     <div>
       <button
         (click)="currentTranslation = translation"
@@ -10,12 +10,30 @@
       </button>
       <button (click)="save()">SAVE</button>
     </div>
-    <table>
+    <table
+      *ngIf="table && currentTranslation"
+      class="table"
+    >
       <thead>
       <tr>
-        <th>ID</th>
-        <th>Current Source</th>
+        <th>
+          <input
+            [(ngModel)]="idFilter"
+            placeholder="ID"
+            type="text"
+          >
+        </th>
+        <th>
+          <select [(ngModel)]="typeFilter">
+            <option value="">All types</option>
+            <option value="same">Same</option>
+            <option value="new">New</option>
+            <option value="changed">Changed</option>
+            <option value="deleted">Deleted</option>
+          </select>
+        </th>
         <th>Prev Source</th>
+        <th>Current Source</th>
         <ng-container *ngIf="currentTranslation">
           <th>
             Target ({{ currentTranslation.locale }})
@@ -24,23 +42,28 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let unit of project.input.translations | keyvalue">
-        <td>{{ unit.key }}</td>
-        <td>{{ unit.value }}</td>
-        <td>
-          <ng-container *ngIf="project.output.source">
-            {{ project.output.source.translations[unit.key] }}
-          </ng-container>
-        </td>
-        <td>
-          <ng-container *ngIf="currentTranslation">
-            <input
-              [(ngModel)]="currentTranslation.translations[unit.key]"
-              type="text"
-            >
-          </ng-container>
-        </td>
-      </tr>
+      <ng-container *ngFor="let row of table">
+        <tr
+          *ngIf="(!idFilter || row.id.toLowerCase().indexOf(idFilter.toLowerCase()) !== -1) && (!typeFilter || row.type === typeFilter)"
+          [ngClass]="['-' + row.type]"
+        >
+          <td>{{ row.id }}</td>
+          <td>{{ row.type }}</td>
+          <td>{{ row.prev }}</td>
+          <td>{{ row.current }}</td>
+          <td>
+            <ng-container *ngIf="row.type !== 'deleted'">
+              <input
+                [(ngModel)]="currentTranslation.translations[row.id]"
+                type="text"
+              >
+            </ng-container>
+            <ng-container *ngIf="row.type === 'deleted'">
+              {{ row.target }}
+            </ng-container>
+          </td>
+        </tr>
+      </ng-container>
       </tbody>
     </table>
   </div>

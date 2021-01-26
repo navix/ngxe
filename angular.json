@@ -182,6 +182,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "baseHref": "/ngxe/",
               "budgets": [
                 {
                   "type": "initial",
