@@ -4,9 +4,11 @@ import { finalize } from 'rxjs/operators';
 import { Api_GetProject } from '../../../meta/api';
 import { JsonFile } from '../../../meta/formats';
 
+type TableRowType = 'same' | 'new' | 'changed' | 'deleted';
+
 interface TableRow {
   id: string;
-  type: 'same' | 'new' | 'changed' | 'deleted';
+  type: TableRowType;
   prev: string;
   current: string;
   target: string;
@@ -30,6 +32,20 @@ export class AppComponent implements OnInit {
 
   typeFilter = '';
 
+  stats: {
+    total?: number;
+    new?: number;
+    changed?: number;
+    deleted?: number;
+  } = {};
+
+  typesWeight: {[key in TableRowType]: number} = {
+    new: 3,
+    changed: 2,
+    same: 0,
+    deleted: -1,
+  };
+
   constructor(
     private http: HttpClient,
   ) {
@@ -44,11 +60,10 @@ export class AppComponent implements OnInit {
       )
       .subscribe(res => {
         this.project = res;
-        this.compileTable({
-          inputSource: this.project.input,
-          outputSource: this.project.output.source,
-          translation: this.project.output.translations[0],
-        });
+        if (!this.project.output.translations.length) {
+          alert('Config have no translations!');
+        }
+        this.setCurrent(this.project.output.translations[0].locale);
       });
   }
 
@@ -64,41 +79,41 @@ export class AppComponent implements OnInit {
       });
   }
 
-//
-//  loadTranslation(locale: string) {
-//    this.http
-//      .get<Api_GetTranslation>(`/api/translation/${locale}`)
-//      .subscribe(res => {
-//        console.log('RES', res);
-//        if (res) {
-//          this.translation = res;
-//        } else {
-//          this.translation = JSON.parse(JSON.stringify(this.source));
-//          if (!this.translation) {
-//            throw Error('Source deep copy failed');
-//          }
-//          this.translation.targetLanguage = locale;
-//          console.log('TRNSL', this.translation);
-//        }
-//      });
-//  }
+  setCurrent(locale: string) {
+    if (!this.project) {
+      return;
+    }
+    const translation = this.project.output.translations.find(t => t.locale === locale);
+    if (!translation) {
+      throw Error(`Trying to set locale ${locale} is not defined in the project`);
+    }
+    this.compileTable({
+      inputSource: this.project.input,
+      outputSource: this.project.output.source,
+      translation,
+    });
+  }
 
   private compileTable({inputSource, outputSource, translation}: {
     inputSource: JsonFile;
     outputSource: JsonFile;
     translation: JsonFile;
   }) {
-    const updates: TableRow[] = Object.keys(inputSource.translations).map(id => ({
-      id,
-      type: outputSource.translations[id] === inputSource.translations[id]
-        ? 'same'
-        : !!outputSource.translations[id] && !!inputSource.translations[id]
-          ? 'changed'
-          : 'new',
-      prev: outputSource.translations[id],
-      current: inputSource.translations[id],
-      target: translation.translations[id],
-    }));
+    const updates: TableRow[] = Object.keys(inputSource.translations)
+      .map<TableRow>(id => ({
+        id,
+        type: outputSource.translations[id] === inputSource.translations[id]
+          ? 'same'
+          : !!outputSource.translations[id] && !!inputSource.translations[id]
+            ? 'changed'
+            : 'new',
+        prev: outputSource.translations[id],
+        current: inputSource.translations[id],
+        target: translation.translations[id],
+      }))
+      .sort((x, y) => {
+        return this.typesWeight[y.type] - this.typesWeight[x.type];
+      });
     const deletes: TableRow[] = Object.keys(outputSource.translations)
       .filter(id => !inputSource.translations[id])
       .map(id => ({
@@ -111,5 +126,11 @@ export class AppComponent implements OnInit {
     // @todo sort by ID
     this.table = [...updates, ...deletes];
     this.currentTranslation = translation;
+    this.stats = {
+      total: this.table.length,
+      new: this.table.filter(r => r.type === 'new').length,
+      changed: this.table.filter(r => r.type === 'changed').length,
+      deleted: this.table.filter(r => r.type === 'deleted').length,
+    };
   }
 }

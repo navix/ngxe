@@ -1,15 +1,29 @@
+<h1 *ngIf="loading">Loading...</h1>
+
 <ng-container *ngIf="project">
   <h1>{{ project.config.name }}</h1>
-  <div *ngIf="project" class="project">
-    <div>
+  <div *ngIf="project && currentTranslation" class="project">
+    <div class="actions">
+      Locales:
       <button
-        (click)="currentTranslation = translation"
+        (click)="setCurrent(translation.locale)"
         *ngFor="let translation of project.output.translations"
       >
         {{ translation.locale }}
       </button>
-      <button (click)="save()">SAVE</button>
+      <button (click)="save()">Save Project</button>
+      <div>
+      </div>
     </div>
+
+    <div class="stats">
+      <div>Current locale: <b>{{ currentTranslation.locale }}</b></div>
+      <div>Total messages: <b>{{ stats.total }}</b></div>
+      <div>
+        New: <b>{{ stats.new }}</b>, Changed: <b>{{ stats.changed }}</b>, Deleted: <b>{{ stats.deleted }}</b>
+      </div>
+    </div>
+
     <table
       *ngIf="table && currentTranslation"
       class="table"
@@ -27,9 +41,9 @@
           <select [(ngModel)]="typeFilter">
             <option value="">All types</option>
             <option value="same">Same</option>
-            <option value="new">New</option>
-            <option value="changed">Changed</option>
-            <option value="deleted">Deleted</option>
+            <option value="new">New ({{ stats.new }})</option>
+            <option value="changed">Changed ({{ stats.changed }})</option>
+            <option value="deleted">Deleted ({{ stats.deleted }})</option>
           </select>
         </th>
         <th>Prev Source</th>
@@ -47,16 +61,16 @@
           *ngIf="(!idFilter || row.id.toLowerCase().indexOf(idFilter.toLowerCase()) !== -1) && (!typeFilter || row.type === typeFilter)"
           [ngClass]="['-' + row.type]"
         >
-          <td>{{ row.id }}</td>
+          <td class="field-id">{{ row.id }}</td>
           <td>{{ row.type }}</td>
-          <td>{{ row.prev }}</td>
-          <td>{{ row.current }}</td>
-          <td>
+          <td class="field-prev">{{ row.prev }}</td>
+          <td class="field-current">{{ row.current }}</td>
+          <td class="field-target">
             <ng-container *ngIf="row.type !== 'deleted'">
-              <input
+              <textarea
                 [(ngModel)]="currentTranslation.translations[row.id]"
-                type="text"
-              >
+                rows="3"
+              ></textarea>
             </ng-container>
             <ng-container *ngIf="row.type === 'deleted'">
               {{ row.target }}
@@ -67,7 +81,4 @@
       </tbody>
     </table>
   </div>
-  <pre>
-    {{ project | json }}
-  </pre>
 </ng-container>
