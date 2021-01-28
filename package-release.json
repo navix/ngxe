@@ -1,6 +1,6 @@
 {
   "name": "@novyk/ngxe",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.10",
   "description": "Angular 11.1+ JSON Translations Editor.",
   "author": {
     "name": "Oleksa Novyk",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "fastify": "^3.10.1",
+    "fastify-disablecache": "^1.0.3",
     "fastify-static": "^3.4.0",
     "open": "^7.3.1"
   }

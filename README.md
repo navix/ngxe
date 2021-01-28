@@ -77,3 +77,7 @@ async function loadMessages() {
   loadTranslations(m.translations);
 }
 ```
+
+## Config
+
+Interface of the `ngxe.json` file: [meta/config.ts](/projects/meta/config.ts)

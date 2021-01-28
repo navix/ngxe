@@ -30,6 +30,7 @@
     "@angular/platform-browser-dynamic": "~11.1.0",
     "@angular/router": "~11.1.0",
     "fastify": "^3.10.1",
+    "fastify-disablecache": "^1.0.3",
     "fastify-static": "^3.4.0",
     "open": "^7.3.1",
     "rxjs": "~6.6.0",

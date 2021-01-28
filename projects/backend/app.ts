@@ -6,19 +6,19 @@ import { Api_GetProject } from '../meta/api';
 import { Config } from '../meta/config';
 import { loadJson } from './load-json';
 import { saveJson } from './save-json';
+import { sortTranslations } from './sort-translations';
 
 // @todo check ngxe.json exist and show proper error
 const config: Config = JSON.parse(readFileSync(resolve('ngxe.json'), {encoding: 'UTF8'}));
 
 const app = fastify({
-  // @todo do not show API logs on prod
-  logger: true,
+  logger: !!config.debug,
   bodyLimit: 10 * 1000000, // X * MB
 });
 
 app.register(async app => {
   app.get('/api/project', async (): Promise<Api_GetProject> => {
-    // @todo properly check any file
+    // @todo properly check each file
     const input = loadJson(config.input);
     if (!input) {
       throw Error('Input file not loaded!');
@@ -36,18 +36,22 @@ app.register(async app => {
   app.post<{Body: Api_GetProject}>(
     '/api/project',
     async (req) => {
-      console.log('POST PROJ', req.body);
       saveJson(config.output.source, req.body.input);
       for (const translation of config.output.translations) {
         const data = req.body.output.translations.find(t => t.locale === translation.locale);
         if (!data) {
           throw Error(`Translation file (${translation.locale}) not found in payload`);
         }
-        saveJson(translation.path, data);
+        saveJson(translation.path, {
+          locale: data.locale,
+          translations: sortTranslations(data.translations),
+        });
       }
       return true;
     });
 });
+
+app.register(require('fastify-disablecache'));
 
 app.register(require('fastify-static'), {
   root: resolve(__dirname, '../../ngxe'),
@@ -61,7 +65,9 @@ app.listen(port, '0.0.0.0', (err) => {
     throw err;
   }
   app.log.info(`ngxe working on ${url}`);
-  // @todo if prod
-  open(url).then(() => {
-  });
+
+  if (!config.notOpen) {
+    open(url).then(() => {
+    });
+  }
 });
