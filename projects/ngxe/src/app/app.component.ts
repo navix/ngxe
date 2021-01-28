@@ -39,11 +39,11 @@ export class AppComponent implements OnInit {
     deleted?: number;
   } = {};
 
-  typesWeight: {[key in TableRowType]: number} = {
+  typesWeight: { [key in TableRowType]: number } = {
     new: 3,
     changed: 2,
+    deleted: 1,
     same: 0,
-    deleted: -1,
   };
 
   constructor(
@@ -110,10 +110,7 @@ export class AppComponent implements OnInit {
         prev: outputSource.translations[id],
         current: inputSource.translations[id],
         target: translation.translations[id],
-      }))
-      .sort((x, y) => {
-        return this.typesWeight[y.type] - this.typesWeight[x.type];
-      });
+      }));
     const deletes: TableRow[] = Object.keys(outputSource.translations)
       .filter(id => !inputSource.translations[id])
       .map(id => ({
@@ -123,8 +120,10 @@ export class AppComponent implements OnInit {
         current: '',
         target: translation.translations[id],
       }));
-    // @todo sort by ID
-    this.table = [...updates, ...deletes];
+    this.table = [...updates, ...deletes]
+      .sort((x, y) => {
+        return this.typesWeight[y.type] - this.typesWeight[x.type];
+      });
     this.currentTranslation = translation;
     this.stats = {
       total: this.table.length,
