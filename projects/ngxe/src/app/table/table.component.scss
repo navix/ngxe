@@ -1,0 +1,73 @@
+:host {
+  border: 1px solid var(--border-color);
+  border-collapse: collapse;
+  --border-color: #d0d0d0;
+  display: block;
+  font-size: .8rem;
+  width: 100%;
+}
+
+.table-head, .table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 3fr 3fr 3fr;
+}
+
+.table-cell {
+  border: 1px solid var(--border-color);
+  box-sizing: border-box;
+  min-width: 0;
+  padding: .25rem .5rem;
+  word-break: break-all;
+}
+
+tr {
+  &.-same {
+    td {
+      color: #333333;
+    }
+    &:hover td {
+      background: #f5f5f5;
+    }
+  }
+  &.-new {
+    td {
+      background: #d6ffd6;
+    }
+    &:hover td {
+      background: #bff3bf;
+    }
+  }
+  &.-changed {
+    td {
+      background: #ffedb1;
+    }
+    &:hover td {
+      background: #f6e59a;
+    }
+  }
+  &.-deleted {
+    td {
+      background: #ffe0ea;
+    }
+    &:hover td {
+      background: #f6cfdc;
+    }
+  }
+}
+
+td, th {
+}
+
+.field-id {
+  word-break: break-word;
+}
+
+.field-prev, .field-current {
+}
+
+.field-target {
+  textarea {
+    font-family: var(--font-family);
+    width: 100%;
+  }
+}

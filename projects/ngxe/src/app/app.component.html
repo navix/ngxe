@@ -20,65 +20,20 @@
       <div>Current locale: <b>{{ currentTranslation.locale }}</b></div>
       <div>Total messages: <b>{{ stats.total }}</b></div>
       <div>
-        New: <b>{{ stats.new }}</b>, Changed: <b>{{ stats.changed }}</b>, Deleted: <b>{{ stats.deleted }}</b>
+        New:
+        <b>{{ stats.new }}</b>,
+        Changed: <b>{{ stats.changed }}</b>,
+        Deleted: <b>{{ stats.deleted }}</b>,
+        No translations: <b>{{ stats.emptyTarget }}</b>
       </div>
     </div>
 
-    <table
-      *ngIf="table && currentTranslation"
-      class="table"
+    <app-table
+      *ngIf="table && stats && currentTranslation"
+      [currentTranslation]="currentTranslation"
+      [stats]="stats"
+      [table]="table"
     >
-      <thead>
-      <tr>
-        <th>
-          <input
-            [(ngModel)]="idFilter"
-            placeholder="ID"
-            type="text"
-          >
-        </th>
-        <th>
-          <select [(ngModel)]="typeFilter">
-            <option value="">All types</option>
-            <option value="same">Same</option>
-            <option value="new">New ({{ stats.new }})</option>
-            <option value="changed">Changed ({{ stats.changed }})</option>
-            <option value="deleted">Deleted ({{ stats.deleted }})</option>
-          </select>
-        </th>
-        <th>Prev Source</th>
-        <th>Current Source</th>
-        <ng-container *ngIf="currentTranslation">
-          <th>
-            Target ({{ currentTranslation.locale }})
-          </th>
-        </ng-container>
-      </tr>
-      </thead>
-      <tbody>
-      <ng-container *ngFor="let row of table">
-        <tr
-          *ngIf="(!idFilter || row.id.toLowerCase().indexOf(idFilter.toLowerCase()) !== -1) && (!typeFilter || row.type === typeFilter)"
-          [ngClass]="['-' + row.type]"
-        >
-          <td class="field-id">{{ row.id }}</td>
-          <td>{{ row.type }}</td>
-          <td class="field-prev">{{ row.prev }}</td>
-          <td class="field-current">{{ row.current }}</td>
-          <td class="field-target">
-            <ng-container *ngIf="row.type !== 'deleted'">
-              <textarea
-                [(ngModel)]="currentTranslation.translations[row.id]"
-                rows="3"
-              ></textarea>
-            </ng-container>
-            <ng-container *ngIf="row.type === 'deleted'">
-              {{ row.target }}
-            </ng-container>
-          </td>
-        </tr>
-      </ng-container>
-      </tbody>
-    </table>
+    </app-table>
   </div>
 </ng-container>

@@ -3,16 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { Api_GetProject } from '../../../meta/api';
 import { JsonFile } from '../../../meta/formats';
-
-type TableRowType = 'same' | 'new' | 'changed' | 'deleted';
-
-interface TableRow {
-  id: string;
-  type: TableRowType;
-  prev: string;
-  current: string;
-  target: string;
-}
+import { TableRow, TableRowType, TableStats } from './meta';
 
 @Component({
   selector: 'app-root',
@@ -28,16 +19,7 @@ export class AppComponent implements OnInit {
 
   table?: TableRow[];
 
-  idFilter = '';
-
-  typeFilter = '';
-
-  stats: {
-    total?: number;
-    new?: number;
-    changed?: number;
-    deleted?: number;
-  } = {};
+  stats: TableStats = {};
 
   typesWeight: { [key in TableRowType]: number } = {
     new: 3,
@@ -130,6 +112,7 @@ export class AppComponent implements OnInit {
       new: this.table.filter(r => r.type === 'new').length,
       changed: this.table.filter(r => r.type === 'changed').length,
       deleted: this.table.filter(r => r.type === 'deleted').length,
+      emptyTarget: this.table.filter(r => !r.target).length,
     };
   }
 }

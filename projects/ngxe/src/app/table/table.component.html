@@ -1,0 +1,55 @@
+<form #headForm="ngForm" class="table-head">
+  <div class="table-cell">
+    <input
+      [(ngModel)]="idFilter"
+      name="id-filter"
+      placeholder="ID"
+      type="text"
+    >
+  </div>
+  <div class="table-cell">
+    <select
+      [(ngModel)]="typeFilter"
+      name="type-filter"
+    >
+      <option value="">All types</option>
+      <option value="same">Same</option>
+      <option value="new">New ({{ stats.new }})</option>
+      <option value="changed">Changed ({{ stats.changed }})</option>
+      <option value="deleted">Deleted ({{ stats.deleted }})</option>
+    </select>
+  </div>
+  <div class="table-cell">Prev Source</div>
+  <div class="table-cell">Current Source</div>
+  <div class="table-cell">
+    Target ({{ currentTranslation.locale }})
+    | <label>
+    <input
+      [(ngModel)]="emptyTargetFilter"
+      name="empty-target-filter"
+      type="checkbox">
+    Only empty
+  </label>
+  </div>
+</form>
+<div class="table-body">
+  <ng-container *ngFor="let row of filteredTable">
+    <div [ngClass]="['-' + row.type]" class="table-row">
+      <div class="table-cell field-id">{{ row.id }}</div>
+      <div class="table-cell">{{ row.type }}</div>
+      <div class="table-cell field-prev">{{ row.prev }}</div>
+      <div class="table-cell field-current">{{ row.current }}</div>
+      <div class="table-cell field-target">
+        <ng-container *ngIf="row.type !== 'deleted'">
+              <textarea
+                [(ngModel)]="currentTranslation.translations[row.id]"
+                rows="3"
+              ></textarea>
+        </ng-container>
+        <ng-container *ngIf="row.type === 'deleted'">
+          {{ row.target }}
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</div>
