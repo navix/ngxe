@@ -19,11 +19,30 @@
       <option value="deleted">Deleted ({{ stats.deleted }})</option>
     </select>
   </div>
-  <div class="table-cell">Prev Source</div>
-  <div class="table-cell">Current Source</div>
   <div class="table-cell">
-    Target ({{ currentTranslation.locale }})
-    | <label>
+    <input
+      [(ngModel)]="prevFilter"
+      name="prev-filter"
+      placeholder="Prev Source"
+      type="text"
+    >
+  </div>
+  <div class="table-cell">
+    <input
+      [(ngModel)]="currentFilter"
+      name="current-filter"
+      placeholder="Current Source"
+      type="text"
+    >
+  </div>
+  <div class="table-cell">
+    <input
+      [(ngModel)]="targetFilter"
+      name="target-filter"
+      placeholder="Target"
+      type="text"
+    >
+    <label>
     <input
       [(ngModel)]="emptyTargetFilter"
       name="empty-target-filter"

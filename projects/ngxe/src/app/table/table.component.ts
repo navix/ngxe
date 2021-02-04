@@ -23,6 +23,12 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
   typeFilter = '';
 
+  prevFilter = '';
+
+  currentFilter = '';
+
+  targetFilter = '';
+
   emptyTargetFilter = false;
 
   filteredTable?: TableRow[];
@@ -55,8 +61,20 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       this.filteredTable = undefined;
       return;
     }
+    const idFilter = this.idFilter.toLowerCase();
+    const prevFilter = this.prevFilter.toLowerCase();
+    const currentFilter = this.currentFilter.toLowerCase();
+    const targetFilter = this.targetFilter.toLowerCase();
+
     this.filteredTable = this.table
-      .filter(row => !this.idFilter || row.id.toLowerCase().indexOf(this.idFilter.toLowerCase()) !== -1)
+      .filter(row => !this.idFilter || row.id.toLowerCase().indexOf(idFilter) !== -1)
+      .filter(row => !this.prevFilter || row.prev.toLowerCase().indexOf(prevFilter) !== -1)
+      .filter(row => !this.currentFilter || row.current.toLowerCase().indexOf(currentFilter) !== -1)
+      .filter(row => !this.targetFilter
+        || (
+          this.currentTranslation.translations[row.id]
+          && this.currentTranslation.translations[row.id].toLowerCase().indexOf(targetFilter) !== -1
+        ))
       .filter(row => !this.typeFilter || row.type === this.typeFilter)
       .filter(row => !this.emptyTargetFilter || !this.currentTranslation.translations[row.id]);
   }
