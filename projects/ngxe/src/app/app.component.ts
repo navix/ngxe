@@ -50,8 +50,27 @@ export class AppComponent implements OnInit {
   }
 
   save() {
+    const project = this.project;
+    if (!project) {
+      return;
+    }
+    const body = {
+      input: project.input,
+      output: {
+        translations: project.output.translations.map(t => ({
+          locale: t.locale,
+          // transfer messages only presented in the current source
+          translations: Object.keys(project.input.translations)
+            .map(key => [key, t.translations[key]])
+            .reduce((curr: any, prev) => {
+              curr[prev[0]] = prev[1];
+              return curr;
+            }, {}),
+        })),
+      },
+    };
     this.http
-      .post(`/api/project`, this.project)
+      .post(`/api/project`, body)
       .subscribe(res => {
         if (res) {
           alert(`Project saved.`);
