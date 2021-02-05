@@ -1,74 +1,102 @@
-<form #headForm="ngForm" class="table-head">
-  <div class="table-cell">
-    <input
-      [(ngModel)]="idFilter"
-      name="id-filter"
-      placeholder="ID"
-      type="text"
-    >
-  </div>
-  <div class="table-cell">
-    <select
-      [(ngModel)]="typeFilter"
-      name="type-filter"
-    >
-      <option value="">All types</option>
-      <option value="same">Same</option>
-      <option value="new">New ({{ stats.new }})</option>
-      <option value="changed">Changed ({{ stats.changed }})</option>
-      <option value="deleted">Deleted ({{ stats.deleted }})</option>
-    </select>
-  </div>
-  <div class="table-cell">
-    <input
-      [(ngModel)]="prevFilter"
-      name="prev-filter"
-      placeholder="Prev Source"
-      type="text"
-    >
-  </div>
-  <div class="table-cell">
-    <input
-      [(ngModel)]="currentFilter"
-      name="current-filter"
-      placeholder="Current Source"
-      type="text"
-    >
-  </div>
-  <div class="table-cell">
-    <input
-      [(ngModel)]="targetFilter"
-      name="target-filter"
-      placeholder="Target"
-      type="text"
-    >
-    <label>
-    <input
-      [(ngModel)]="emptyTargetFilter"
-      name="empty-target-filter"
-      type="checkbox">
-    Only empty
-  </label>
-  </div>
-</form>
-<div class="table-body">
-  <ng-container *ngFor="let row of filteredTable">
-    <div [ngClass]="['-' + row.type]" class="table-row">
-      <div class="table-cell field-id">{{ row.id }}</div>
-      <div class="table-cell">{{ row.type }}</div>
-      <div class="table-cell field-prev">{{ row.prev }}</div>
-      <div class="table-cell field-current">{{ row.current }}</div>
-      <div class="table-cell field-target">
-        <ng-container *ngIf="row.type !== 'deleted'">
+<div class="main">
+  <form #headForm="ngForm" class="head" autocomplete="off">
+    <div class="table-cell">
+      <input
+        [(ngModel)]="idFilter"
+        name="id-filter"
+        placeholder="ID"
+        type="text"
+      >
+    </div>
+    <div class="table-cell">
+      <select
+        [(ngModel)]="typeFilter"
+        name="type-filter"
+      >
+        <option value="">All types</option>
+        <option value="same">Same</option>
+        <option value="new">New ({{ stats.new }})</option>
+        <option value="changed">Changed ({{ stats.changed }})</option>
+        <option value="deleted">Deleted ({{ stats.deleted }})</option>
+      </select>
+    </div>
+    <div class="table-cell">
+      <input
+        [(ngModel)]="prevFilter"
+        name="prev-filter"
+        placeholder="Prev Source"
+        type="text"
+      >
+    </div>
+    <div class="table-cell">
+      <input
+        [(ngModel)]="currentFilter"
+        name="current-filter"
+        placeholder="Current Source"
+        type="text"
+      >
+    </div>
+    <div class="table-cell">
+      <input
+        [(ngModel)]="targetFilter"
+        name="target-filter"
+        placeholder="Target"
+        type="text"
+      >
+      <label>
+        <input
+          [(ngModel)]="emptyTargetFilter"
+          name="empty-target-filter"
+          type="checkbox">
+        Only empty
+      </label>
+    </div>
+  </form>
+  <div class="body">
+    <ng-container *ngFor="let row of pageRows">
+      <div [ngClass]="['-' + row.type]" class="table-row">
+        <div class="table-cell field-id">{{ row.id }}</div>
+        <div class="table-cell">{{ row.type }}</div>
+        <div class="table-cell field-prev">{{ row.prev }}</div>
+        <div class="table-cell field-current">{{ row.current }}</div>
+        <div class="table-cell field-target">
+          <ng-container *ngIf="row.type !== 'deleted'">
               <textarea
                 [(ngModel)]="currentTranslation.translations[row.id]"
                 rows="3"
               ></textarea>
-        </ng-container>
-        <ng-container *ngIf="row.type === 'deleted'">
-          {{ row.target }}
-        </ng-container>
+          </ng-container>
+          <ng-container *ngIf="row.type === 'deleted'">
+            {{ row.target }}
+          </ng-container>
+        </div>
       </div>
+    </ng-container>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="paginator">
+    <div class="per-page-selector">
+      <label>
+        Per page:
+        <select (ngModelChange)="perPage = +$event; pickPage(1)" [ngModel]="perPage">
+          <option value="0">All</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="250">250</option>
+          <option value="1000">1000</option>
+        </select>
+      </label>
     </div>
-  </ng-container>
+    <div class="current-page">
+      {{ pageStartIndex + 1 }}-{{ pageEndIndex }} / {{ filteredTable.length }}
+    </div>
+    <div class="change-page">
+      <button (click)="pickPage(page - 1)" [disabled]="page <= 1">Prev</button>
+      <button (click)="pickPage(page + 1)" [disabled]="page >= totalPages">Next</button>
+    </div>
+  </div>
 </div>

@@ -31,7 +31,19 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
   emptyTargetFilter = false;
 
-  filteredTable?: TableRow[];
+  filteredTable: TableRow[] = [];
+
+  totalPages = 0;
+
+  page = 1;
+
+  perPage = 25;
+
+  pageStartIndex = 0;
+
+  pageEndIndex = 0;
+
+  pageRows: TableRow[] = [];
 
   #destroy = new Subject();
 
@@ -56,9 +68,31 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
     this.#destroy.complete();
   }
 
+  pickPage(page: number) {
+    this.page = page;
+    if (!this.filteredTable) {
+      this.pageRows = [];
+      this.totalPages = 1;
+      return;
+    }
+    this.totalPages = Math.ceil(this.filteredTable.length / this.perPage);
+    if (this.perPage === 0) {
+      this.pageRows = this.filteredTable;
+      this.pageStartIndex = 1;
+      this.pageEndIndex = this.pageRows.length;
+    } else {
+      this.pageStartIndex = (this.page - 1) * this.perPage;
+      this.pageEndIndex = this.pageStartIndex + this.perPage;
+      if (this.pageEndIndex > this.filteredTable.length) {
+        this.pageEndIndex = this.filteredTable.length;
+      }
+      this.pageRows = this.filteredTable.slice(this.pageStartIndex, this.pageEndIndex);
+    }
+  }
+
   private filterTable() {
     if (!this.table) {
-      this.filteredTable = undefined;
+      this.filteredTable = [];
       return;
     }
     const idFilter = this.idFilter.toLowerCase();
@@ -68,8 +102,8 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
     this.filteredTable = this.table
       .filter(row => !this.idFilter || row.id.toLowerCase().indexOf(idFilter) !== -1)
-      .filter(row => !this.prevFilter || row.prev.toLowerCase().indexOf(prevFilter) !== -1)
-      .filter(row => !this.currentFilter || row.current.toLowerCase().indexOf(currentFilter) !== -1)
+      .filter(row => !this.prevFilter || (row.prev && row.prev.toLowerCase().indexOf(prevFilter) !== -1))
+      .filter(row => !this.currentFilter || (row.current && row.current.toLowerCase().indexOf(currentFilter) !== -1))
       .filter(row => !this.targetFilter
         || (
           this.currentTranslation.translations[row.id]
@@ -77,6 +111,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
         ))
       .filter(row => !this.typeFilter || row.type === this.typeFilter)
       .filter(row => !this.emptyTargetFilter || !this.currentTranslation.translations[row.id]);
-  }
 
+    this.pickPage(1);
+  }
 }

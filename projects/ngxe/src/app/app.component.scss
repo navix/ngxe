@@ -1,10 +1,38 @@
-.actions {
-  margin: .5rem 0;
-  button {
-    margin: 0 .25rem;
+:host {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.head {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  padding: .5rem 1rem;
+  .main {
+    flex-grow: 1;
+    .title {
+      font-size: 1.6rem;
+      margin: 0;
+    }
+    .actions {
+      margin-top: .5rem;
+      button {
+        margin: 0 .25rem;
+      }
+    }
+  }
+  .side {
+    flex-shrink: 0;
+    .stats {
+      font-size: .8rem;
+    }
   }
 }
 
-.stats {
-  margin: .5rem 0;
+.table {
+  flex-grow: 1;
 }

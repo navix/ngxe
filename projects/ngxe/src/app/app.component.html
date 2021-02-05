@@ -1,39 +1,42 @@
 <h1 *ngIf="loading">Loading...</h1>
 
-<ng-container *ngIf="project">
-  <h1>{{ project.config.name }}</h1>
-  <div *ngIf="project && currentTranslation" class="project">
-    <div class="actions">
-      Locales:
-      <button
-        (click)="setCurrent(translation.locale)"
-        *ngFor="let translation of project.output.translations"
-      >
-        {{ translation.locale }}
-      </button>
-      <button (click)="save()">Save Project</button>
-      <div>
+<ng-container *ngIf="project && currentTranslation">
+  <div class="head">
+    <div class="main">
+      <h1 class="title">{{ project.config.name }}</h1>
+      <div class="actions">
+        Locales:
+        <button
+          (click)="setCurrent(translation.locale)"
+          *ngFor="let translation of project.output.translations"
+        >
+          {{ translation.locale }}
+        </button>
+        <button (click)="save()">Save Project</button>
+        <div>
+        </div>
       </div>
     </div>
-
-    <div class="stats">
-      <div>Current locale: <b>{{ currentTranslation.locale }}</b></div>
-      <div>Total messages: <b>{{ stats.total }}</b></div>
-      <div>
-        New:
-        <b>{{ stats.new }}</b>,
-        Changed: <b>{{ stats.changed }}</b>,
-        Deleted: <b>{{ stats.deleted }}</b>,
-        No translations: <b>{{ stats.emptyTarget }}</b>
+    <div class="side">
+      <div class="stats">
+        <div>Current locale: <b>{{ currentTranslation.locale }}</b></div>
+        <div>Total messages: <b>{{ stats.total }}</b></div>
+        <div>
+          New:
+          <b>{{ stats.new }}</b>,
+          Changed: <b>{{ stats.changed }}</b>,
+          Deleted: <b>{{ stats.deleted }}</b>,
+          No translations: <b>{{ stats.emptyTarget }}</b>
+        </div>
       </div>
     </div>
-
-    <app-table
-      *ngIf="table && stats && currentTranslation"
-      [currentTranslation]="currentTranslation"
-      [stats]="stats"
-      [table]="table"
-    >
-    </app-table>
   </div>
+  <app-table
+    *ngIf="table && stats && currentTranslation"
+    [currentTranslation]="currentTranslation"
+    [stats]="stats"
+    [table]="table"
+    class="table"
+  >
+  </app-table>
 </ng-container>
