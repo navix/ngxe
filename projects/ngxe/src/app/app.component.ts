@@ -46,6 +46,9 @@ export class AppComponent implements OnInit {
           alert('Config have no translations!');
         }
         this.setCurrent(this.project.output.translations[0].locale);
+      }, err => {
+        alert(`API error! The ngxe is still running?`);
+        console.error(err);
       });
   }
 
@@ -77,6 +80,9 @@ export class AppComponent implements OnInit {
         } else {
           alert('Save failed!');
         }
+      }, err => {
+        alert(`API error! The ngxe is still running?`);
+        console.error(err);
       });
   }
 
