@@ -4,6 +4,7 @@ import { finalize } from 'rxjs/operators';
 import { Api_GetProject } from '../../../meta/api';
 import { JsonFile } from '../../../meta/formats';
 import { TableRow, TableRowType, TableStats } from './meta';
+import { sortTranslations } from './sort-translations';
 
 @Component({
   selector: 'app-root',
@@ -41,7 +42,14 @@ export class AppComponent implements OnInit {
         finalize(() => this.loading = false),
       )
       .subscribe(res => {
-        this.project = res;
+        this.project = {
+          config: res.config,
+          input: {
+            locale: res.input.locale,
+            translations: sortTranslations(res.input.translations),
+          },
+          output: res.output,
+        };
         if (!this.project.output.translations.length) {
           alert('Config have no translations!');
         }
@@ -58,17 +66,22 @@ export class AppComponent implements OnInit {
       return;
     }
     const body = {
-      input: project.input,
+      input: {
+        locale: project.input.locale,
+        translations: sortTranslations(project.input.translations),
+      },
       output: {
         translations: project.output.translations.map(t => ({
           locale: t.locale,
           // transfer messages only presented in the current source
-          translations: Object.keys(project.input.translations)
-            .map(key => [key, t.translations[key]])
-            .reduce((curr: any, prev) => {
-              curr[prev[0]] = prev[1];
-              return curr;
-            }, {}),
+          translations: sortTranslations(
+            Object.keys(project.input.translations)
+              .map(key => [key, t.translations[key]])
+              .reduce((obj: any, prev) => {
+                obj[prev[0]] = prev[1];
+                return obj;
+              }, {}),
+          ),
         })),
       },
     };

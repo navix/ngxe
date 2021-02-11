@@ -6,7 +6,6 @@ import { Api_GetProject } from '../meta/api';
 import { Config } from '../meta/config';
 import { loadJson } from './load-json';
 import { saveJson } from './save-json';
-import { sortTranslations } from './sort-translations';
 
 // @todo check ngxe.json exist and show proper error
 const config: Config = JSON.parse(readFileSync(resolve('ngxe.json'), {encoding: 'UTF8'}));
@@ -44,7 +43,7 @@ app.register(async app => {
         }
         saveJson(translation.path, {
           locale: data.locale,
-          translations: sortTranslations(data.translations),
+          translations: data.translations,
         });
       }
       return true;

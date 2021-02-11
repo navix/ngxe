@@ -1,4 +1,4 @@
-import { JsonFileTranslations } from '../meta/formats';
+import { JsonFileTranslations } from '../../../meta/formats';
 
 export function sortTranslations(translations: JsonFileTranslations) {
   return Object
