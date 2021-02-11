@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -18,6 +18,8 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() stats!: TableStats;
 
   @Input() currentTranslation!: JsonFile;
+
+  @ViewChild('mainEl', {static: true}) mainEl!: ElementRef;
 
   @ViewChild('headForm', {static: true}) headForm!: NgForm;
 
@@ -95,6 +97,12 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.pageRows = this.filteredTable.slice(this.pageStartIndex, this.pageEndIndex);
     }
+    this.mainEl.nativeElement.scroll({top: 0});
+  }
+
+  savePerPage(perPage: string) {
+    this.perPage = +perPage;
+    localStorage.setItem(perPageStorageKey, perPage);
   }
 
   private filterTable() {
@@ -120,10 +128,5 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       .filter(row => !this.emptyTargetFilter || !this.currentTranslation.translations[row.id]);
 
     this.pickPage(1);
-  }
-
-  savePerPage(perPage: string) {
-    this.perPage = +perPage;
-    localStorage.setItem(perPageStorageKey, perPage);
   }
 }
