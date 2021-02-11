@@ -5,6 +5,8 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { JsonFile } from '../../../../meta/formats';
 import { TableRow, TableStats } from '../meta';
 
+const perPageStorageKey = '_PER_PAGE';
+
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -57,6 +59,11 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
         debounceTime(250),
       )
       .subscribe(() => this.filterTable());
+    // load local settings
+    const perPage = localStorage.getItem(perPageStorageKey);
+    if (perPage) {
+      this.perPage = +perPage;
+    }
   }
 
   ngOnChanges() {
@@ -113,5 +120,10 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       .filter(row => !this.emptyTargetFilter || !this.currentTranslation.translations[row.id]);
 
     this.pickPage(1);
+  }
+
+  savePerPage(perPage: string) {
+    this.perPage = +perPage;
+    localStorage.setItem(perPageStorageKey, perPage);
   }
 }

@@ -84,7 +84,7 @@
     <div class="per-page-selector">
       <label>
         Per page:
-        <select (ngModelChange)="perPage = +$event; pickPage(1)" [ngModel]="perPage">
+        <select (ngModelChange)="savePerPage($event); pickPage(1)" [ngModel]="perPage">
           <option value="0">All</option>
           <option value="10">10</option>
           <option value="25">25</option>
