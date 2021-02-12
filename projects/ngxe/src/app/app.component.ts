@@ -122,7 +122,7 @@ export class AppComponent implements OnInit {
     const updates: TableRow[] = Object.keys(inputSource.translations)
       .map<TableRow>(id => ({
         id,
-        type: outputSource.translations[id] === inputSource.translations[id]
+        type: outputSource.translations[id]?.trim() === inputSource.translations[id]?.trim()
           ? 'same'
           : !!outputSource.translations[id] && !!inputSource.translations[id]
             ? 'changed'
