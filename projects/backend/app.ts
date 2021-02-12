@@ -35,15 +35,23 @@ app.register(async app => {
   app.post<{Body: Api_GetProject}>(
     '/api/project',
     async (req) => {
-      saveJson(config.output.source, req.body.input);
+      saveJson({
+        path: config.output.source,
+        file: req.body.input,
+        eofLine: !config.noEofLine,
+      });
       for (const translation of config.output.translations) {
         const data = req.body.output.translations.find(t => t.locale === translation.locale);
         if (!data) {
           throw Error(`Translation file (${translation.locale}) not found in payload`);
         }
-        saveJson(translation.path, {
-          locale: data.locale,
-          translations: data.translations,
+        saveJson({
+          path: translation.path,
+          file: {
+            locale: data.locale,
+            translations: data.translations,
+          },
+          eofLine: !config.noEofLine,
         });
       }
       return true;
