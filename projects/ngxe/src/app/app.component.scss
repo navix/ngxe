@@ -1,5 +1,53 @@
 :host {
+  &.-light {
+    --background: #ffffff;
+    --button: #c3c7c8;
+    --color: #292c32;
+    --focus: #a6c5d4;
+    --head: #eeeeee;
+    --border-1: #d0d0d0;
+    --border-2: #bfbfbf;
+    --row-changed: #ffedb1;
+    --row-changed-hover: #f6e59a;
+    --row-deleted: #ffe0ea;
+    --row-deleted-hover: #f6cfdc;
+    --row-new: #d6ffd6;
+    --row-new-hover: #bff3bf;
+  }
+  &.-solar {
+    --background: #fdf6e3;
+    --button: #ded2af;
+    --color: #576b73;
+    --head: #efecdf;
+    --border-1: #d0cbba;
+    --border-2: #d7d5ca;
+    --row-changed: #ffedb1;
+    --row-changed-hover: #f6e59a;
+    --row-deleted: #ffe0ea;
+    --row-deleted-hover: #f6cfdc;
+    --row-new: #d6ffd6;
+    --row-new-hover: #bff3bf;
+  }
+  &.-dark {
+    --background: #292c32;
+    --button: #c3c7c8;
+    --color: #f1f1f1;
+    --head: #3b3d45;
+    --border-1: #676b73;
+    --border-2: #545862;
+    --row-changed: linear-gradient(110deg, rgb(173 124 39 / 50%) 0%, rgba(0, 255, 226, 0) 100%);
+    --row-changed-hover: linear-gradient(110deg, rgb(173 124 39 / 55%) 0%, rgba(0, 255, 226, 0) 100%);
+    --row-deleted: linear-gradient(110deg, rgb(191 36 36 / 40%) 0%, rgba(0, 255, 226, 0) 100%);
+    --row-deleted-hover: linear-gradient(110deg, rgb(191 36 36 / 45%) 0%, rgba(0, 255, 226, 0) 100%);
+    --row-new: linear-gradient(110deg, rgb(70 206 82 / 35%) 0%, rgba(0, 255, 226, 0) 100%);
+    --row-new-hover: linear-gradient(110deg, rgb(70 206 82 / 40%) 0%, rgba(0, 255, 226, 0) 100%);
+  }
+}
+
+:host {
+  background: var(--background);
   box-sizing: border-box;
+  color: var(--color);
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -27,6 +75,9 @@
   }
   .side {
     flex-shrink: 0;
+    .theme-picker {
+      float: right;
+    }
     .stats {
       font-size: .8rem;
     }

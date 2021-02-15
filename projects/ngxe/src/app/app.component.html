@@ -12,12 +12,17 @@
         >
           {{ translation.locale }}
         </button>
-        <button (click)="save()">Save Project</button>
+        <button (click)="save()">💾 Save Project</button>
         <div>
         </div>
       </div>
     </div>
     <div class="side">
+      <select (ngModelChange)="saveTheme($event)" [(ngModel)]="themeClass" class="theme-picker" name="theme">
+        <option value="-light">Light theme</option>
+        <option value="-solar">Solar theme</option>
+        <option value="-dark">Dark theme</option>
+      </select>
       <div class="stats">
         <div>Current locale: <b>{{ project.currentTranslation.locale }}</b></div>
         <div>Total messages: <b>{{ project.stats.total }}</b></div>

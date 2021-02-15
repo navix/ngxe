@@ -51,9 +51,6 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
   #destroy = new Subject();
 
-  constructor() {
-  }
-
   ngOnInit() {
     this.headForm.valueChanges
       ?.pipe(

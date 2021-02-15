@@ -13,3 +13,18 @@ body {
   margin: 0;
   padding: 0;
 }
+
+input, select, textarea {
+  background: var(--background);
+  border: 1px solid var(--border-2);
+  border-radius: 2px;
+  color: var(--color);
+  padding: .15rem .2rem;
+}
+
+button {
+  background: var(--button);
+  border: 0;
+  border-radius: 3px;
+  padding: .2rem .5rem;
+}

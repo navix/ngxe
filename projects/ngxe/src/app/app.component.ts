@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { Project } from './project';
+
+const themeStorageKey = '_THEME';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +11,12 @@ import { Project } from './project';
 })
 export class AppComponent implements OnInit {
   loading = false;
+
+  themeClass = '-light';
+
+  @HostBinding('class') get classBinding() {
+    return this.themeClass;
+  }
 
   constructor(
     public project: Project,
@@ -30,6 +38,11 @@ export class AppComponent implements OnInit {
           console.error(err);
         },
       );
+    // load local settings
+    const theme = localStorage.getItem(themeStorageKey);
+    if (theme) {
+      this.themeClass = theme;
+    }
   }
 
   save() {
@@ -45,5 +58,9 @@ export class AppComponent implements OnInit {
         alert(`API error! The ngxe is still running?`);
         console.error(err);
       });
+  }
+
+  saveTheme(theme: string) {
+    localStorage.setItem(themeStorageKey, theme);
   }
 }
