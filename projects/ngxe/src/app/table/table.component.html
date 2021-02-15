@@ -7,7 +7,7 @@
         placeholder="ID"
         type="text"
       >
-      <button type="button" (click)="idFilter = ''">X</button>
+      <button *ngIf="idFilter" type="button" (click)="idFilter = ''">❌</button>
     </div>
     <div class="table-cell">
       <select
@@ -28,7 +28,7 @@
         placeholder="Prev Source"
         type="text"
       >
-      <button type="button" (click)="prevFilter = ''">X</button>
+      <button *ngIf="prevFilter" type="button" (click)="prevFilter = ''">❌</button>
     </div>
     <div class="table-cell">
       <input
@@ -37,7 +37,7 @@
         placeholder="Current Source"
         type="text"
       >
-      <button type="button" (click)="currentFilter = ''">X</button>
+      <button *ngIf="currentFilter" type="button" (click)="currentFilter = ''">❌</button>
     </div>
     <div class="table-cell">
       <input
@@ -46,7 +46,7 @@
         placeholder="Target"
         type="text"
       >
-      <button type="button" (click)="targetFilter = ''">X</button>
+      <button *ngIf="targetFilter" type="button" (click)="targetFilter = ''">❌</button>
       <label>
         <input
           [(ngModel)]="emptyTargetFilter"
