@@ -10,8 +10,14 @@ import { saveJson } from './save-json';
 // @todo check ngxe.json exist and show proper error
 const config: Config = JSON.parse(readFileSync(resolve('ngxe.json'), {encoding: 'UTF8'}));
 
+// set config defaults
+config.debug = config.debug ?? false;
+config.port = config.port ?? 7600;
+config.open = config.open ?? true;
+config.eofLine = config.eofLine ?? true;
+
 const app = fastify({
-  logger: !!config.debug,
+  logger: config.debug,
   bodyLimit: 10 * 1000000, // X * MB
 });
 
@@ -38,7 +44,7 @@ app.register(async app => {
       saveJson({
         path: config.output.source,
         file: req.body.input,
-        eofLine: !config.noEofLine,
+        eofLine: config.eofLine,
       });
       for (const translation of config.output.translations) {
         const data = req.body.output.translations.find(t => t.locale === translation.locale);
@@ -51,7 +57,7 @@ app.register(async app => {
             locale: data.locale,
             translations: data.translations,
           },
-          eofLine: !config.noEofLine,
+          eofLine: config.eofLine,
         });
       }
       return true;
@@ -65,15 +71,14 @@ app.register(require('fastify-static'), {
   prefix: '/',
 });
 
-const port = 7600;
-const url = `http://localhost:${port}`;
-app.listen(port, '0.0.0.0', (err) => {
+const url = `http://localhost:${config.port}`;
+app.listen(config.port, '0.0.0.0', (err) => {
   if (err) {
     throw err;
   }
   app.log.info(`ngxe working on ${url}`);
 
-  if (!config.notOpen) {
+  if (config.open) {
     open(url).then(() => {
     });
   }
