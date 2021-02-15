@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
 import { TableComponent } from './table.component';
 
@@ -8,15 +9,15 @@ describe('TableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TableComponent ]
-    })
-    .compileComponents();
+        declarations: [TableComponent],
+        imports: [FormsModule],
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TableComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

@@ -1,14 +1,14 @@
 <h1 *ngIf="loading">Loading...</h1>
 
-<ng-container *ngIf="project && currentTranslation">
+<ng-container *ngIf="project.data && project.currentTranslation">
   <div class="head">
     <div class="main">
-      <h1 class="title">{{ project.config.name }}</h1>
+      <h1 class="title">{{ project.data.config.name }}</h1>
       <div class="actions">
         Locales:
         <button
-          (click)="setCurrent(translation.locale)"
-          *ngFor="let translation of project.output.translations"
+          (click)="project.setCurrent(translation.locale)"
+          *ngFor="let translation of project.data.output.translations"
         >
           {{ translation.locale }}
         </button>
@@ -19,23 +19,23 @@
     </div>
     <div class="side">
       <div class="stats">
-        <div>Current locale: <b>{{ currentTranslation.locale }}</b></div>
-        <div>Total messages: <b>{{ stats.total }}</b></div>
+        <div>Current locale: <b>{{ project.currentTranslation.locale }}</b></div>
+        <div>Total messages: <b>{{ project.stats.total }}</b></div>
         <div>
           New:
-          <b>{{ stats.new }}</b>,
-          Changed: <b>{{ stats.changed }}</b>,
-          Deleted: <b>{{ stats.deleted }}</b>,
-          No translations: <b>{{ stats.emptyTarget }}</b>
+          <b>{{ project.stats.new }}</b>,
+          Changed: <b>{{ project.stats.changed }}</b>,
+          Deleted: <b>{{ project.stats.deleted }}</b>,
+          No translations: <b>{{ project.stats.emptyTarget }}</b>
         </div>
       </div>
     </div>
   </div>
   <app-table
-    *ngIf="table && stats && currentTranslation"
-    [currentTranslation]="currentTranslation"
-    [stats]="stats"
-    [table]="table"
+    *ngIf="project.table && project.stats && project.currentTranslation"
+    [currentTranslation]="project.currentTranslation"
+    [stats]="project.stats"
+    [table]="project.table"
     class="table"
   >
   </app-table>
