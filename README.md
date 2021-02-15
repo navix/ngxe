@@ -1,13 +1,13 @@
 [![npm version](https://badge.fury.io/js/%40novyk%2Fngxe.svg)](https://www.npmjs.com/@novyk/ngxe)
 
-# ngxe
+# ngxe (currently in BETA)
 
 Angular 11.1+ JSON Translations Editor.
 
 ## Installation
 
 ```
-$ npm i @novyk/ngxe -D
+$ npm i @novyk/ngxe@beta -D
 ```
 
 ## Usage
