@@ -62,11 +62,11 @@ app.register(require('fastify-disablecache'));
 
 app.register(require('fastify-static'), {
   root: resolve(__dirname, '../../ngxe'),
-  prefix: '/ngxe/',
+  prefix: '/',
 });
 
 const port = 7600;
-const url = `http://localhost:${port}/ngxe/index.html`;
+const url = `http://localhost:${port}`;
 app.listen(port, '0.0.0.0', (err) => {
   if (err) {
     throw err;
