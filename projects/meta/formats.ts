@@ -1,16 +1,4 @@
-export interface XliffFile {
-  sourceLanguage: string;
-  targetLanguage?: string;
-  resources: {
-    ngi18n: {
-      [key: string]: {
-        source: string;
-        note: string;
-        target: string;
-      };
-    };
-  };
-}
+import { JSONSchemaType } from 'ajv';
 
 export interface JsonFile {
   locale: string;
@@ -20,3 +8,16 @@ export interface JsonFile {
 export interface JsonFileTranslations {
   [key: string]: string;
 }
+
+export const jsonFileSchema: JSONSchemaType<JsonFile> = {
+  type: 'object',
+  properties: {
+    locale: {type: 'string'},
+    translations: {
+      type: 'object',
+      additionalProperties: {type: 'string'},
+      required: [],
+    },
+  },
+  required: ['locale', 'translations'],
+};

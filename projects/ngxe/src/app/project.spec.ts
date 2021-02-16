@@ -223,6 +223,7 @@ describe('Project', () => {
 
 class HttpStub {
   project: any = {
+    success: true,
     config: 'CONFIG',
     input: {
       locale: 'INP_LOC',

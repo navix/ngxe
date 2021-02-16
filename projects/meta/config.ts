@@ -1,3 +1,5 @@
+import { JSONSchemaType } from 'ajv';
+
 export interface Config {
   /**
    * Your project name.
@@ -47,3 +49,35 @@ export interface Config {
     }[];
   };
 }
+
+export const configSchema: JSONSchemaType<Config> = {
+  type: 'object',
+  properties: {
+    name: {type: 'string'},
+    debug: {type: 'boolean', default: false},
+    port: {type: 'number', default: 7600},
+    open: {type: 'boolean', default: true},
+    eofLine: {type: 'boolean', default: true},
+    input: {type: 'string'},
+    output: {
+      type: 'object',
+      properties: {
+        source: {type: 'string'},
+        translations: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              locale: {type: 'string'},
+              path: {type: 'string'},
+            },
+            required: ['locale', 'path'],
+          },
+        },
+      },
+      required: ['source', 'translations'],
+    },
+  },
+  required: ['name', 'input', 'output'],
+  additionalProperties: false,
+};

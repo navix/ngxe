@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { Api_GetProject } from '../../../meta/api';
+import { Api_Error, Api_GetProject } from '../../../meta/api';
 import { JsonFile, JsonFileTranslations } from '../../../meta/formats';
 import { TableRow, TableRowType, TableStats } from './meta';
 
@@ -31,10 +31,15 @@ export class Project {
 
   load() {
     return this.http
-      .get<Api_GetProject>('/api/project')
+      .get<Api_GetProject | Api_Error>('/api/project')
       .pipe(
         tap(res => {
+          if (!res.success) {
+            alert(res.message);
+            return;
+          }
           this.data = {
+            success: true,
             config: res.config,
             input: {
               locale: res.input.locale,

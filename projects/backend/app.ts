@@ -1,20 +1,34 @@
+import Ajv from 'ajv';
 import fastify from 'fastify';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import * as open from 'open';
 import { resolve } from 'path';
-import { Api_GetProject } from '../meta/api';
-import { Config } from '../meta/config';
+import { Api_Error, Api_GetProject } from '../meta/api';
+import { Config, configSchema } from '../meta/config';
 import { loadJson } from './load-json';
 import { saveJson } from './save-json';
+import betterAjvErrors = require('better-ajv-errors');
 
-// @todo check ngxe.json exist and show proper error
-const config: Config = JSON.parse(readFileSync(resolve('ngxe.json'), {encoding: 'UTF8'}));
+const configPath = resolve('ngxe.json');
+if (!existsSync(configPath)) {
+  throw new Error('Config file not found. Create ngxe.json.');
+}
 
-// set config defaults
-config.debug = config.debug ?? false;
-config.port = config.port ?? 7600;
-config.open = config.open ?? true;
-config.eofLine = config.eofLine ?? true;
+let config: Config;
+try {
+  config = JSON.parse(readFileSync(configPath, {encoding: 'UTF8'}));
+} catch (e) {
+  throw new Error(`Can't load and parse config file: ${e.message}.`);
+}
+
+const ajv = new Ajv({
+  useDefaults: true,
+});
+const validate = ajv.compile(configSchema);
+if (!validate(config)) {
+  console.log(betterAjvErrors(configSchema, config, validate.errors));
+  process.exit(1);
+}
 
 const app = fastify({
   logger: config.debug,
@@ -22,20 +36,39 @@ const app = fastify({
 });
 
 app.register(async app => {
-  app.get('/api/project', async (): Promise<Api_GetProject> => {
-    // @todo properly check each file
-    const input = loadJson(config.input);
-    if (!input) {
-      throw Error('Input file not loaded!');
+  app.get('/api/project', async (): Promise<Api_GetProject | Api_Error> => {
+    try {
+      const input = loadJson({path: config.input});
+      if (!input) {
+        throw new Error(`loadJson should throw Error before!`);
+      }
+      return {
+        success: true,
+        config,
+        input,
+        output: {
+          source: loadJson({
+            path: config.output.source,
+            shouldExist: false,
+            forceLocale: input.locale,
+          }) ?? {locale: input.locale, translations: {}},
+          translations: config.output.translations
+            .map(t => loadJson({
+              path: t.path,
+              shouldExist: false,
+              forceLocale: t.locale,
+            }) ?? {
+              locale: t.locale,
+              translations: {},
+            }),
+        },
+      };
+    } catch (e) {
+      return {
+        success: false,
+        message: `Project reading error: ${e.message}.`,
+      };
     }
-    return {
-      config,
-      input,
-      output: {
-        source: loadJson(config.output.source) ?? {locale: input.locale, translations: {}},
-        translations: config.output.translations.map(t => loadJson(t.path) ?? {locale: t.locale, translations: {}}),
-      },
-    };
   });
 
   app.post<{Body: Api_GetProject}>(
@@ -49,7 +82,7 @@ app.register(async app => {
       for (const translation of config.output.translations) {
         const data = req.body.output.translations.find(t => t.locale === translation.locale);
         if (!data) {
-          throw Error(`Translation file (${translation.locale}) not found in payload`);
+          throw Error(`Translation file (${translation.locale}) not found in payload.`);
         }
         saveJson({
           path: translation.path,

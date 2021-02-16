@@ -16,9 +16,11 @@
     "ngxe": "./bin/ngxe"
   },
   "dependencies": {
-    "fastify": "^3.10.1",
-    "fastify-disablecache": "^1.0.3",
-    "fastify-static": "^3.4.0",
-    "open": "^7.3.1"
+    "ajv": "7.1.0",
+    "better-ajv-errors": "0.7.0",
+    "fastify": "3.10.1",
+    "fastify-disablecache": "1.0.3",
+    "fastify-static": "3.4.0",
+    "open": "7.3.1"
   }
 }
