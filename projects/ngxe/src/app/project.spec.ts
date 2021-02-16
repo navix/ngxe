@@ -81,7 +81,7 @@ describe('Project', () => {
         ] as any);
       });
 
-      it('should trim compare messages', () => {
+      it('should trim messages', () => {
         http.project.input.translations = {
           'KEY': '   Source',
         };
@@ -97,8 +97,8 @@ describe('Project', () => {
           {
             id: 'KEY',
             type: 'same',
-            prev: 'Source    ',
-            current: '   Source',
+            prev: 'Source',
+            current: 'Source',
             target: 'Target',
           },
         ] as any);

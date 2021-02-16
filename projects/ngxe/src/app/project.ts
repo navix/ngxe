@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { Api_GetProject } from '../../../meta/api';
-import { JsonFile } from '../../../meta/formats';
+import { JsonFile, JsonFileTranslations } from '../../../meta/formats';
 import { TableRow, TableRowType, TableStats } from './meta';
-import { sortTranslations } from './sort-translations';
 
 const typesWeight: { [key in TableRowType]: number } = {
   new: 3,
@@ -39,9 +38,18 @@ export class Project {
             config: res.config,
             input: {
               locale: res.input.locale,
-              translations: sortTranslations(res.input.translations),
+              translations: this.processTranslationsObject(res.input.translations),
             },
-            output: res.output,
+            output: {
+              source: {
+                locale: res.output.source.locale,
+                translations: this.processTranslationsObject(res.output.source.translations),
+              },
+              translations: res.output.translations.map(t => ({
+                locale: t.locale,
+                translations: this.processTranslationsObject(t.translations),
+              })),
+            },
           };
           if (!this.data.output.translations.length) {
             alert('Config have no translations!');
@@ -74,13 +82,13 @@ export class Project {
     const body = {
       input: {
         locale: project.input.locale,
-        translations: sortTranslations(project.input.translations),
+        translations: this.processTranslationsObject(project.input.translations),
       },
       output: {
         translations: project.output.translations.map(t => ({
           locale: t.locale,
           // transfer messages only presented in the current source
-          translations: sortTranslations(
+          translations: this.processTranslationsObject(
             Object.keys(project.input.translations)
               .map(key => [key, t.translations[key]])
               .reduce((obj: any, prev) => {
@@ -102,7 +110,7 @@ export class Project {
     const updates: TableRow[] = Object.keys(inputSource.translations)
       .map<TableRow>(id => ({
         id,
-        type: outputSource.translations[id]?.trim() === inputSource.translations[id]?.trim()
+        type: outputSource.translations[id] === inputSource.translations[id]
           ? 'same'
           : !!outputSource.translations[id] && !!inputSource.translations[id]
             ? 'changed'
@@ -132,5 +140,16 @@ export class Project {
       deleted: this.table.filter(r => r.type === 'deleted').length,
       emptyTarget: this.table.filter(r => r.type !== 'deleted').filter(r => !r.target).length,
     };
+  }
+
+  private processTranslationsObject(translations: JsonFileTranslations) {
+    return Object
+      .keys(translations)
+      .sort()
+      .reduce<{[key: string]: string}>(
+        (obj, key) => {
+          obj[key] = translations[key]?.trim();
+          return obj;
+        }, {});
   }
 }
