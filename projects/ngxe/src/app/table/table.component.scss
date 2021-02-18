@@ -92,6 +92,22 @@
     height: 5em;
     width: 100%;
   }
+  .suggestions {
+    margin-top: .2rem;
+    h5 {
+      margin: 0;
+    }
+    .suggestion {
+      border-radius: .3rem;
+      cursor: pointer;
+      font-size: .75rem;
+      margin: .2rem 0;
+      padding: .2rem;
+      &:hover {
+        background: var(--button);
+      }
+    }
+  }
 }
 
 .footer {

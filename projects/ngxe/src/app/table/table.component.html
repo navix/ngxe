@@ -1,5 +1,5 @@
 <div #mainEl class="main">
-  <form #headForm="ngForm" class="head" autocomplete="off">
+  <form #headForm="ngForm" autocomplete="off" class="head">
     <div class="table-cell">
       <input
         [(ngModel)]="idFilter"
@@ -7,7 +7,7 @@
         placeholder="ID"
         type="text"
       >
-      <button *ngIf="idFilter" type="button" (click)="idFilter = ''">❌</button>
+      <button (click)="idFilter = ''" *ngIf="idFilter" type="button">❌</button>
     </div>
     <div class="table-cell">
       <select
@@ -28,7 +28,7 @@
         placeholder="Prev Source"
         type="text"
       >
-      <button *ngIf="prevFilter" type="button" (click)="prevFilter = ''">❌</button>
+      <button (click)="prevFilter = ''" *ngIf="prevFilter" type="button">❌</button>
     </div>
     <div class="table-cell">
       <input
@@ -37,7 +37,7 @@
         placeholder="Current Source"
         type="text"
       >
-      <button *ngIf="currentFilter" type="button" (click)="currentFilter = ''">❌</button>
+      <button (click)="currentFilter = ''" *ngIf="currentFilter" type="button">❌</button>
     </div>
     <div class="table-cell">
       <input
@@ -46,12 +46,13 @@
         placeholder="Target"
         type="text"
       >
-      <button *ngIf="targetFilter" type="button" (click)="targetFilter = ''">❌</button>
+      <button (click)="targetFilter = ''" *ngIf="targetFilter" type="button">❌</button>
       <label>
         <input
           [(ngModel)]="emptyTargetFilter"
           name="empty-target-filter"
-          type="checkbox">
+          type="checkbox"
+        >
         Only empty
       </label>
     </div>
@@ -69,6 +70,16 @@
                 [(ngModel)]="currentTranslation.translations[row.id]"
                 rows="3"
               ></textarea>
+            <div *ngIf="row.suggestions.length > 0" class="suggestions">
+              <h5>Suggestions</h5>
+              <div
+                (click)="currentTranslation.translations[row.id] = suggestion"
+                *ngFor="let suggestion of row.suggestions"
+                class="suggestion"
+              >
+                {{ suggestion }}
+              </div>
+            </div>
           </ng-container>
           <ng-container *ngIf="row.type === 'deleted'">
             {{ row.target }}

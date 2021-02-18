@@ -6,6 +6,7 @@ export interface TableRow {
   prev: string;
   current: string;
   target: string;
+  suggestions: string[];
 }
 
 export interface TableStats {

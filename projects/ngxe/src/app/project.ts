@@ -112,7 +112,9 @@ export class Project {
     outputSource: JsonFile;
     translation: JsonFile;
   }) {
-    const updates: TableRow[] = Object.keys(inputSource.translations)
+    const inputKeys = Object.keys(inputSource.translations);
+    const outputKeys = Object.keys(outputSource.translations);
+    const updates: TableRow[] = inputKeys
       .map<TableRow>(id => ({
         id,
         type: outputSource.translations[id] === inputSource.translations[id]
@@ -123,6 +125,17 @@ export class Project {
         prev: outputSource.translations[id],
         current: inputSource.translations[id],
         target: translation.translations[id],
+        // Set for removing duplicated
+        suggestions: [...new Set([
+          // Messages that HAD the same source
+          ...outputKeys
+            .filter(sid => sid !== id && outputSource.translations[sid] === inputSource.translations[id])
+            .map(sid => translation.translations[sid]),
+          // Messages with same source
+          ...inputKeys
+            .filter(sid => sid !== id && inputSource.translations[sid] === inputSource.translations[id])
+            .map(sid => translation.translations[sid]),
+        ].filter(m => !!m && m !== translation.translations[id]))],
       }));
     const deletes: TableRow[] = Object.keys(outputSource.translations)
       .filter(id => !inputSource.translations[id])
@@ -132,6 +145,7 @@ export class Project {
         prev: outputSource.translations[id],
         current: '',
         target: translation.translations[id],
+        suggestions: [],
       }));
     this.table = [...updates, ...deletes]
       .sort((x, y) => {

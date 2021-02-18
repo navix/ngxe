@@ -56,6 +56,7 @@ describe('Project', () => {
             prev: undefined,
             current: 'New',
             target: undefined,
+            suggestions: [],
           },
           {
             id: 'KEY_CHANGED',
@@ -63,6 +64,7 @@ describe('Project', () => {
             prev: 'ChangedPrev',
             current: 'Changed',
             target: 'ChangedTr',
+            suggestions: [],
           },
           {
             id: 'KEY_DELETED',
@@ -70,6 +72,7 @@ describe('Project', () => {
             prev: 'Deleted',
             current: '',
             target: undefined,
+            suggestions: [],
           },
           {
             id: 'KEY_STALE',
@@ -77,6 +80,7 @@ describe('Project', () => {
             prev: 'Stale',
             current: 'Stale',
             target: 'StaleTr',
+            suggestions: [],
           },
         ] as any);
       });
@@ -100,6 +104,52 @@ describe('Project', () => {
             prev: 'Source',
             current: 'Source',
             target: 'Target',
+            suggestions: [],
+          },
+        ] as any);
+      });
+
+      it('should suggest', () => {
+        http.project.input.translations = {
+          'KEY_1': 'Input Source 1',
+          'KEY_2': 'Input Source 2',
+        };
+        http.project.output.source.translations = {
+          'KEY_1': 'Input Source 2',
+          'KEY_2': 'Input Source 1',
+          'KEY_3': 'Input Source 2',
+        };
+        http.project.output.translations[0].translations = {
+          'KEY_1': 'Target 1',
+          'KEY_2': 'Target 2',
+          'KEY_3': 'Target 3',
+        };
+        service.load().subscribe(() => {
+        });
+        expect(service.table).toEqual([
+          {
+            id: 'KEY_1',
+            type: 'changed',
+            prev: 'Input Source 2',
+            current: 'Input Source 1',
+            target: 'Target 1',
+            suggestions: ['Target 2'],
+          },
+          {
+            id: 'KEY_2',
+            type: 'changed',
+            prev: 'Input Source 1',
+            current: 'Input Source 2',
+            target: 'Target 2',
+            suggestions: ['Target 1', 'Target 3'],
+          },
+          {
+            id: 'KEY_3',
+            type: 'deleted',
+            prev: 'Input Source 2',
+            current: '',
+            target: 'Target 3',
+            suggestions: [],
           },
         ] as any);
       });
