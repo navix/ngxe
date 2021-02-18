@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/%40novyk%2Fngxe.svg)](https://www.npmjs.com/@novyk/ngxe)
 
-# ngxe (currently in BETA)
+# 📜 ngxe (currently in BETA)
 
 Angular 11.1+ JSON Translations Editor.
 
@@ -64,6 +64,10 @@ Use the ngxe app to update messages and press `Save Project` (all `output` files
 2. **Or** import messages on the app bootstrapping in `main.ts`:
 
 ```
+import { loadTranslations } from '@angular/localize';
+
+...
+
 loadMessages()
   .then(() => {
     platformBrowserDynamic().bootstrapModule(AppModule);
