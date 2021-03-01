@@ -9,6 +9,7 @@
         <button
           (click)="project.setCurrent(translation.locale)"
           *ngFor="let translation of project.data.output.translations"
+          [class.-active]="translation.locale === project.currentTranslation.locale"
         >
           {{ translation.locale }}
         </button>

@@ -18,6 +18,7 @@
     --background: #fdf6e3;
     --button: #ded2af;
     --color: #576b73;
+    --focus: #a6c5d4;
     --head: #efecdf;
     --border-1: #d0cbba;
     --border-2: #d7d5ca;
@@ -32,6 +33,7 @@
     --background: #292c32;
     --button: #c3c7c8;
     --color: #f1f1f1;
+    --focus: #a6c5d4;
     --head: #3b3d45;
     --border-1: #676b73;
     --border-2: #545862;
@@ -70,6 +72,9 @@
       margin-top: .5rem;
       button {
         margin: 0 .25rem;
+        &.-active {
+          background: var(--focus);
+        }
       }
     }
   }
