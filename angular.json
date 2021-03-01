@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "1d4ffcaa-92a7-40b2-9408-78e76ccf27fd"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -15,7 +18,8 @@
       "prefix": "app",
       "i18n": {
         "locales": {
-          "uk": "messages.uk.xlf"
+          "uk": "projects/demo/i18n/messages.uk.xlf",
+          "de": "projects/demo/i18n/messages.de.xlf"
         }
       },
       "architect": {
@@ -88,7 +92,8 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "demo:build",
-            "format": "xliff2"
+            "format": "json",
+            "outputPath": "projects/demo/i18n"
           }
         },
         "test": {

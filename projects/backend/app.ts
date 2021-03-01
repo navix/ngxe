@@ -1,6 +1,7 @@
 import Ajv from 'ajv';
 import fastify from 'fastify';
 import { existsSync, readFileSync } from 'fs';
+import * as meow from 'meow';
 import * as open from 'open';
 import { resolve } from 'path';
 import { Api_Error, Api_GetProject } from '../meta/api';
@@ -9,9 +10,27 @@ import { loadJson } from './load-json';
 import { saveJson } from './save-json';
 import betterAjvErrors = require('better-ajv-errors');
 
-const configPath = resolve('ngxe.json');
+const cli = meow(`
+  📜 ngxe
+
+  Usage
+    $ npx ngxe
+
+  Options
+    --project, -p Path to project file, default: ngxe.json
+`, {
+  flags: {
+    project: {
+      type: 'string',
+      alias: 'p',
+    },
+  },
+});
+
+const configFile = cli.flags.project ?? 'ngxe.json';
+const configPath = resolve(configFile);
 if (!existsSync(configPath)) {
-  throw new Error('Config file not found. Create ngxe.json.');
+  throw new Error(`Config file not found. Create ${configFile}.`);
 }
 
 let config: Config;
@@ -109,7 +128,7 @@ app.listen(config.port, '0.0.0.0', (err) => {
   if (err) {
     throw err;
   }
-  app.log.info(`ngxe working on ${url}`);
+  app.log.info(`📜 ngxe working on ${url}`);
 
   if (config.open) {
     open(url).then(() => {
