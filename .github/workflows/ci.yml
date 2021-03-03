@@ -17,5 +17,5 @@ jobs:
       - 
         name: I and Test
         run: |
-          npm run i
-          npm run test
+          npm i
+          npm run test -- --watch=false
