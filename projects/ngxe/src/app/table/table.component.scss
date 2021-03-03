@@ -111,12 +111,16 @@
 }
 
 .footer {
+  align-items: center;
   border-top: 2px solid var(--border-2);
   display: flex;
   flex-flow: row;
   flex-shrink: 0;
-  justify-content: flex-end;
   padding: .5rem 1rem;
+  .proj {
+    flex-grow: 1;
+    font-size: .75rem;
+  }
   .paginator {
     align-items: center;
     display: flex;

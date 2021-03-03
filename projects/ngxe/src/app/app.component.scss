@@ -13,6 +13,7 @@
     --row-deleted-hover: #f6cfdc;
     --row-new: #d6ffd6;
     --row-new-hover: #bff3bf;
+    --link: #26c7f1;
   }
   &.-solar {
     --background: #fdf6e3;
@@ -28,6 +29,7 @@
     --row-deleted-hover: #f6cfdc;
     --row-new: #d6ffd6;
     --row-new-hover: #bff3bf;
+    --link: #26c7f1;
   }
   &.-dark {
     --background: #292c32;
@@ -43,6 +45,7 @@
     --row-deleted-hover: linear-gradient(110deg, rgb(191 36 36 / 45%) 0%, rgba(0, 255, 226, 0) 100%);
     --row-new: linear-gradient(110deg, rgb(70 206 82 / 35%) 0%, rgba(0, 255, 226, 0) 100%);
     --row-new-hover: linear-gradient(110deg, rgb(70 206 82 / 40%) 0%, rgba(0, 255, 226, 0) 100%);
+    --link: #26c7f1;
   }
 }
 
@@ -91,4 +94,8 @@
 
 .table {
   flex-grow: 1;
+}
+
+a {
+  color: var(--link);
 }
