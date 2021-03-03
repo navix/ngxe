@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { Api_Error, Api_GetProject } from '../../../meta/api';
+import { Api_GetProject } from '../../../meta/api';
 import { JsonFile, JsonFileTranslations } from '../../../meta/formats';
+import { Api } from './api';
 import { TableRow, TableRowType, TableStats } from './meta';
 
 const typesWeight: { [key in TableRowType]: number } = {
@@ -25,13 +25,13 @@ export class Project {
   stats: TableStats = {};
 
   constructor(
-    private http: HttpClient,
+    private api: Api,
   ) {
   }
 
   load() {
-    return this.http
-      .get<Api_GetProject | Api_Error>('/api/project')
+    return this.api
+      .getProject()
       .pipe(
         tap(res => {
           if (!res.success) {
@@ -104,7 +104,7 @@ export class Project {
         })),
       },
     };
-    return this.http.post('/api/project', body);
+    return this.api.postProject(body);
   }
 
   private compileTable({inputSource, outputSource, translation}: {

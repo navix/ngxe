@@ -5,6 +5,7 @@
     "ng": "ng",
     "ngxe:start": "ng run ngxe:serve --proxy-config proxy.conf.json",
     "ngxe:build": "ng run ngxe:build:production",
+    "ngxe:build:demo": "ng run ngxe:build:demo",
     "test": "ng run ngxe:test",
     "demo:start": "ng run demo:serve --port=4201",
     "demo:start:uk": "ng run demo:serve:uk",

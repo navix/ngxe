@@ -5,12 +5,12 @@
     "source": "projects/demo/i18n/messages.en.json",
     "translations": [
       {
-        "locale": "uk",
-        "path": "projects/demo/i18n/messages.uk.json"
-      },
-      {
         "locale": "de",
         "path": "projects/demo/i18n/messages.de.json"
+      },
+      {
+        "locale": "uk",
+        "path": "projects/demo/i18n/messages.uk.json"
       }
     ]
   }

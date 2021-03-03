@@ -3,11 +3,11 @@ import { Project } from './project';
 
 describe('Project', () => {
   let service: Project;
-  let http: HttpStub;
+  let api: ApiStub;
 
   beforeEach(() => {
-    http = new HttpStub();
-    service = new Project(http as any);
+    api = new ApiStub();
+    service = new Project(api as any);
   });
 
   it('should be created', () => {
@@ -15,24 +15,24 @@ describe('Project', () => {
   });
 
   describe('load()', () => {
-    it('should load data via http', () => {
-      const spy = spyOn(http, 'get').and.callThrough();
+    it('should load data via api', () => {
+      const spy = spyOn(api, 'getProject').and.callThrough();
       service.load().subscribe(() => {
       });
-      expect(spy).toHaveBeenCalledWith('/api/project');
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should store data', () => {
       service.load().subscribe(() => {
       });
-      expect(service.data).toEqual(http.project as any);
+      expect(service.data).toEqual(api.project as any);
     });
 
     it('should run setCurrent() with first locale', () => {
       const spy = spyOn(service, 'setCurrent');
       service.load().subscribe(() => {
       });
-      expect(spy).toHaveBeenCalledWith(http.project.output.translations[0].locale);
+      expect(spy).toHaveBeenCalledWith(api.project.output.translations[0].locale);
     });
   });
 
@@ -86,13 +86,13 @@ describe('Project', () => {
       });
 
       it('should trim messages', () => {
-        http.project.input.translations = {
+        api.project.input.translations = {
           'KEY': '   Source',
         };
-        http.project.output.source.translations = {
+        api.project.output.source.translations = {
           'KEY': 'Source    ',
         };
-        http.project.output.translations[0].translations = {
+        api.project.output.translations[0].translations = {
           'KEY': 'Target',
         };
         service.load().subscribe(() => {
@@ -110,16 +110,16 @@ describe('Project', () => {
       });
 
       it('should suggest', () => {
-        http.project.input.translations = {
+        api.project.input.translations = {
           'KEY_1': 'Input Source 1',
           'KEY_2': 'Input Source 2',
         };
-        http.project.output.source.translations = {
+        api.project.output.source.translations = {
           'KEY_1': 'Input Source 2',
           'KEY_2': 'Input Source 1',
           'KEY_3': 'Input Source 2',
         };
-        http.project.output.translations[0].translations = {
+        api.project.output.translations[0].translations = {
           'KEY_1': 'Target 1',
           'KEY_2': 'Target 2',
           'KEY_3': 'Target 3',
@@ -170,13 +170,12 @@ describe('Project', () => {
 
   describe('save()', () => {
     it('should compile body and send via http', () => {
-      const spy = spyOn(http, 'post').and.callThrough();
+      const spy = spyOn(api, 'postProject').and.callThrough();
       service.load().subscribe(() => {
       });
       service.save().subscribe(() => {
       });
       expect(spy).toHaveBeenCalledWith(
-        '/api/project',
         {
           input: {
             locale: 'INP_LOC',
@@ -193,34 +192,33 @@ describe('Project', () => {
     });
 
     it('should sort messages by ID', () => {
-      http.project.input.translations = {
+      api.project.input.translations = {
         'KEY_3': 'Key3',
         'KEY_1': 'Key1',
         'A_KEY': 'AKey',
         'Z_KEY': 'ZKey',
         'KEY_2': 'Key2',
       };
-      http.project.output.source.translations = {
+      api.project.output.source.translations = {
         'KEY_3': 'Key3',
         'KEY_1': 'Key1',
         'A_KEY': 'AKey',
         'Z_KEY': 'ZKey',
         'KEY_2': 'Key2',
       };
-      http.project.output.translations[0].translations = {
+      api.project.output.translations[0].translations = {
         'KEY_3': 'Key3',
         'KEY_1': 'Key1',
         'A_KEY': 'AKey',
         'Z_KEY': 'ZKey',
         'KEY_2': 'Key2',
       };
-      const spy = spyOn(http, 'post').and.callThrough();
+      const spy = spyOn(api, 'postProject').and.callThrough();
       service.load().subscribe(() => {
       });
       service.save().subscribe(() => {
       });
       expect(spy).toHaveBeenCalledWith(
-        '/api/project',
         {
           input: {
             locale: 'INP_LOC',
@@ -237,23 +235,22 @@ describe('Project', () => {
     });
 
     it('should remove non existed messages in source from target', () => {
-      http.project.input.translations = {
+      api.project.input.translations = {
         'KEY': 'Source',
       };
-      http.project.output.source.translations = {
+      api.project.output.source.translations = {
         'KEY': 'Source',
       };
-      http.project.output.translations[0].translations = {
+      api.project.output.translations[0].translations = {
         'KEY': 'Target',
         'UNEX_KEY': 'Unex',
       };
-      const spy = spyOn(http, 'post').and.callThrough();
+      const spy = spyOn(api, 'postProject').and.callThrough();
       service.load().subscribe(() => {
       });
       service.save().subscribe(() => {
       });
       expect(spy).toHaveBeenCalledWith(
-        '/api/project',
         {
           input: {
             locale: 'INP_LOC',
@@ -271,7 +268,7 @@ describe('Project', () => {
   });
 });
 
-class HttpStub {
+class ApiStub {
   project: any = {
     success: true,
     config: 'CONFIG',
@@ -304,11 +301,11 @@ class HttpStub {
     },
   };
 
-  get(url: string) {
+  getProject() {
     return of(this.project);
   }
 
-  post(url: string, body: any) {
+  postProject(body: any) {
     return of(true);
   }
 }
