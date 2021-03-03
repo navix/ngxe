@@ -18,4 +18,4 @@ jobs:
         name: I and Test
         run: |
           npm i
-          npm run test -- --watch=false
+          npm run test -- --watch=false --browsers=ChromeHeadless
