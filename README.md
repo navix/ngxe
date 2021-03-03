@@ -76,6 +76,12 @@ Browser should open the app (http://localhost:7600/).
 
 Use the ngxe app to update messages and press `Save Project` (all `output` files will be updated).
 
+###### Optional config path:
+
+```
+$ npx ngxe -p=./path/to/ngxe.json
+```
+
 #### Build your app
 
 1. You can use the default flow with separated build for each lang.
