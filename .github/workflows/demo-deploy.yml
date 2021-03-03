@@ -1,0 +1,26 @@
+name: demo-deploy
+
+on: push
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Build
+        run: |
+          npm i
+          npm run ngxe:build:demo
+      -
+        name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: dist/ngxe
+          fqdn: ngxe.oleksanovyk.com
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
