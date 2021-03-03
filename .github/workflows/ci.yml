@@ -19,3 +19,5 @@ jobs:
         run: |
           npm i
           npm run test -- --watch=false --browsers=ChromeHeadless
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
