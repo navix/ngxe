@@ -3,7 +3,6 @@
     "module": "commonjs",
     "declaration": true,
     "target": "es2017",
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "incremental": true,
     "outDir": "../../dist/backend",

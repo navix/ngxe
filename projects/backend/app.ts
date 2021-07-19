@@ -35,7 +35,7 @@ if (!existsSync(configPath)) {
 
 let config: Config;
 try {
-  config = JSON.parse(readFileSync(configPath, {encoding: 'UTF8'}));
+  config = JSON.parse(readFileSync(configPath, {encoding: 'utf8'}));
 } catch (e) {
   throw new Error(`Can't load and parse config file: ${e.message}.`);
 }

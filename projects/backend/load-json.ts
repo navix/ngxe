@@ -20,7 +20,7 @@ export function loadJson({path, shouldExist = true, forceLocale}: {
   }
 
   try {
-    const raw = readFileSync(rPath, {encoding: 'UTF8'});
+    const raw = readFileSync(rPath, {encoding: 'utf8'});
     const json: JsonFile = JSON.parse(raw);
 
     const ajv = new Ajv();
