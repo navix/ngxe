@@ -57,6 +57,7 @@ describe('Project', () => {
             current: 'New',
             target: undefined,
             suggestions: [],
+            placeholders: [],
           },
           {
             id: 'KEY_CHANGED',
@@ -65,6 +66,7 @@ describe('Project', () => {
             current: 'Changed',
             target: 'ChangedTr',
             suggestions: [],
+            placeholders: [],
           },
           {
             id: 'KEY_DELETED',
@@ -73,6 +75,7 @@ describe('Project', () => {
             current: '',
             target: undefined,
             suggestions: [],
+            placeholders: [],
           },
           {
             id: 'KEY_STALE',
@@ -81,6 +84,7 @@ describe('Project', () => {
             current: 'Stale',
             target: 'StaleTr',
             suggestions: [],
+            placeholders: [],
           },
         ] as any);
       });
@@ -105,6 +109,7 @@ describe('Project', () => {
             current: 'Source',
             target: 'Target',
             suggestions: [],
+            placeholders: [],
           },
         ] as any);
       });
@@ -134,6 +139,7 @@ describe('Project', () => {
             current: 'Input Source 1',
             target: 'Target 1',
             suggestions: ['Target 2'],
+            placeholders: [],
           },
           {
             id: 'KEY_2',
@@ -142,6 +148,7 @@ describe('Project', () => {
             current: 'Input Source 2',
             target: 'Target 2',
             suggestions: ['Target 1', 'Target 3'],
+            placeholders: [],
           },
           {
             id: 'KEY_3',
@@ -150,6 +157,32 @@ describe('Project', () => {
             current: '',
             target: 'Target 3',
             suggestions: [],
+            placeholders: [],
+          },
+        ] as any);
+      });
+
+      it('should extract placeholders', () => {
+        api.project.input.translations = {
+          'KEY_1': 'With {$PLACEHOLDER}',
+        };
+        api.project.output.source.translations = {
+          'KEY_1': 'With {$PLACEHOLDER}',
+        };
+        api.project.output.translations[0].translations = {
+          'KEY_1': 'With {$PLACEHOLDER}',
+        };
+        service.load().subscribe(() => {
+        });
+        expect(service.table).toEqual([
+          {
+            id: 'KEY_1',
+            type: 'same',
+            prev: 'With {$PLACEHOLDER}',
+            current: 'With {$PLACEHOLDER}',
+            target: 'With {$PLACEHOLDER}',
+            suggestions: [],
+            placeholders: ['{$PLACEHOLDER}'],
           },
         ] as any);
       });

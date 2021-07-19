@@ -3,6 +3,7 @@ import { tap } from 'rxjs/operators';
 import { Api_GetProject } from '../../../meta/api';
 import { JsonFile, JsonFileTranslations } from '../../../meta/formats';
 import { Api } from './api';
+import { extractPlaceholders } from './placeholders/extract-placeholders';
 import { TableRow, TableRowType, TableStats } from './meta';
 
 const typesWeight: { [key in TableRowType]: number } = {
@@ -136,6 +137,7 @@ export class Project {
             .filter(sid => sid !== id && inputSource.translations[sid] === inputSource.translations[id])
             .map(sid => translation.translations[sid]),
         ].filter(m => !!m && m !== translation.translations[id]))],
+        placeholders: extractPlaceholders(inputSource.translations[id]),
       }));
     const deletes: TableRow[] = Object.keys(outputSource.translations)
       .filter(id => !inputSource.translations[id])
@@ -146,6 +148,7 @@ export class Project {
         current: '',
         target: translation.translations[id],
         suggestions: [],
+        placeholders: [],
       }));
     this.table = [...updates, ...deletes]
       .sort((x, y) => {

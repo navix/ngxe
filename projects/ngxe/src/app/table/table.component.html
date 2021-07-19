@@ -67,18 +67,25 @@
         <div class="table-cell field-target">
           <ng-container *ngIf="row.type !== 'deleted'">
               <textarea
+                #model="ngModel"
                 [(ngModel)]="currentTranslation.translations[row.id]"
+                [originalPlaceholders]="row.placeholders"
+                appPlaceholders
                 rows="3"
               ></textarea>
             <div *ngIf="row.suggestions.length > 0" class="suggestions">
-              <h5>Suggestions</h5>
-              <div
+              <h5 class="row-title">Suggestions</h5>
+              <button
                 (click)="currentTranslation.translations[row.id] = suggestion"
                 *ngFor="let suggestion of row.suggestions"
                 class="suggestion"
               >
-                {{ suggestion }}
-              </div>
+                💡 {{ suggestion }}
+              </button>
+            </div>
+            <div *ngIf="model.hasError('placeholders')" class="validation">
+              <h5 class="row-title">Validation</h5>
+              🚧 Placeholders not found: {{ row.placeholders.join(', ') }}.
             </div>
           </ng-container>
           <ng-container *ngIf="row.type === 'deleted'">

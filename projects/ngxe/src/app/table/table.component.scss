@@ -92,21 +92,28 @@
     height: 5em;
     width: 100%;
   }
+  .row-title {
+    margin: 0;
+  }
   .suggestions {
     margin-top: .2rem;
-    h5 {
-      margin: 0;
-    }
     .suggestion {
+      background: transparent;
       border-radius: .3rem;
       cursor: pointer;
       font-size: .75rem;
       margin: .2rem 0;
       padding: .2rem;
+      text-align: left;
+      width: 100%;
       &:hover {
         background: var(--button);
       }
     }
+  }
+  .validation {
+    margin-top: .2rem;
+    padding: .2rem;
   }
 }
 
