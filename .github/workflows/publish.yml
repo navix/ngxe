@@ -17,5 +17,4 @@ jobs:
           npm i
           npm run test -- --watch=false --browsers=ChromeHeadless
           npm run release
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
