@@ -23,7 +23,7 @@ A simple UI for your translations: hosted on NPM, runs on your dev machine.
 
 ## Installation
 
-```
+```shell
 $ npm i @novyk/ngxe -D
 ```
 
@@ -54,7 +54,7 @@ $ npm i @novyk/ngxe -D
 
 #### Extract translations from your project in JSON format:
 
-```
+```shell
 $ ng extract-i18n --format=json
 ```
 
@@ -68,7 +68,7 @@ $localize`:@@MSG_ID_2:Message with ID 2`;
 
 #### Use ngxe:
 
-```
+```shell
 $ npx ngxe
 ```
 
@@ -78,7 +78,7 @@ Use the ngxe app to update messages and press `Save Project` (all `output` files
 
 ###### Optional config path:
 
-```
+```shell
 $ npx ngxe -p=./path/to/ngxe.json
 ```
 
@@ -87,7 +87,7 @@ $ npx ngxe -p=./path/to/ngxe.json
 1. You can use the default flow with separated build for each lang.
 2. **Or** import messages on the app bootstrapping in `main.ts`:
 
-```
+```ts
 import { loadTranslations } from '@angular/localize';
 
 ...
@@ -106,6 +106,28 @@ async function loadMessages() {
 }
 ```
 
+
 ## Config
 
 Interface of the `ngxe.json` file: [meta/config.ts](/projects/meta/config.ts)
+
+
+## Convert existing `xlf` files to `json`
+
+```shell
+$ npm i @locl/cli -D
+$ npx locl convert -s=path/to/messages.de.xlf -f=json -o=path/to/messages.de.json
+```
+
+You can get error: `The translation file "path/to/messages.de.xlf" does not contain a target locale and no explicit locale was provided for this file.`
+
+Make sure you have the `target-language` attribute in `xlf` file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" target-language="de" ...>
+    ...
+```
+
+After that you can delete `@locl/cli` package. 
