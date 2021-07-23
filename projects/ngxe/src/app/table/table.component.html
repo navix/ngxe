@@ -83,9 +83,9 @@
                 💡 {{ suggestion }}
               </button>
             </div>
-            <div *ngIf="model.hasError('placeholders')" class="validation">
+            <div *ngIf="model.getError('placeholders'); let error" class="validation">
               <h5 class="row-title">Validation</h5>
-              🚧 Placeholders not found: {{ row.placeholders.join(', ') }}.
+              🚧 Placeholders not found: {{ error.join(', ') }}.
             </div>
           </ng-container>
           <ng-container *ngIf="row.type === 'deleted'">

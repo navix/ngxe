@@ -14,11 +14,17 @@ export class PlaceholdersValidatorDirective implements Validator {
 
   validate(control: AbstractControl): ValidationErrors | null {
     const placeholders = extractPlaceholders(control.value);
-    const changes = this
-      .originalPlaceholders
-      .filter(op => placeholders.indexOf(op) === -1);
+    const misses: string[] = [];
+    for (const original of this.originalPlaceholders) {
+      const ind = placeholders.indexOf(original);
+      if (ind !== -1) {
+        placeholders.splice(ind, 1);
+      } else {
+        misses.push(original);
+      }
+    }
     return {
-      placeholders: changes.length > 0 ? changes : null,
+      placeholders: misses.length > 0 ? misses : null,
     };
   }
 }
