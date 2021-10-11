@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  backendless: true,
+  backendless: false,
 };
 
 /*

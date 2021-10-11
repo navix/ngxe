@@ -2,7 +2,7 @@
 
 <div *ngIf="backendless && !project.data" class="backendless">
   <h1>ngxe editor</h1>
-  <button appFileHolder class="import">
+  <button appFileHolder>
     <input
       (select)="loadFromFile($event)"
       appFile
@@ -36,7 +36,7 @@
         <ng-container *ngIf="!backendless">
           <button (click)="save()">💾 Save Project</button>
           <button (click)="export()">📤 Export</button>
-          <button appFileHolder class="import">
+          <button appFileHolder>
             <input
               (select)="import($event)"
               appFile

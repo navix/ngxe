@@ -59,6 +59,12 @@
   overflow: hidden;
 }
 
+[appFileHolder] {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+}
+
 .backendless {
   padding: 2rem;
 }
@@ -82,11 +88,6 @@
         &.-active {
           background: var(--focus);
         }
-      }
-      .import {
-        display: inline-block;
-        overflow: hidden;
-        position: relative;
       }
     }
   }
