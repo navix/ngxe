@@ -3,8 +3,8 @@ import { tap } from 'rxjs/operators';
 import { Api_GetProject } from '../../../meta/api';
 import { JsonFile, JsonFileTranslations } from '../../../meta/formats';
 import { Api } from './api';
-import { extractPlaceholders } from './placeholders/extract-placeholders';
 import { TableRow, TableRowType, TableStats } from './meta';
+import { extractPlaceholders } from './placeholders/extract-placeholders';
 
 const typesWeight: { [key in TableRowType]: number } = {
   new: 3,
@@ -106,6 +106,31 @@ export class Project {
       },
     };
     return this.api.postProject(body);
+  }
+
+  import(data: Api_GetProject) {
+    if (!this.data) {
+      return;
+    }
+    for (const translation of this.data.output.translations) {
+      const importTranslation = data.output.translations.find(t => t.locale === translation.locale);
+      if (!importTranslation) {
+        continue;
+      }
+      for (const key of Object.keys(importTranslation.translations)) {
+        const importValue = importTranslation.translations[key];
+        if (this.data.input.translations[key]) {
+          translation.translations[key] = importValue;
+        }
+      }
+    }
+    console.log('UPDTD', this.data);
+    this.setCurrent(this.data.output.translations[0].locale);
+  }
+
+  loadFromFile(data: Api_GetProject) {
+    this.data = data;
+    this.setCurrent(this.data.output.translations[0].locale);
   }
 
   private compileTable({inputSource, outputSource, translation}: {

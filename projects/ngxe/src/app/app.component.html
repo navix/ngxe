@@ -1,5 +1,22 @@
 <h1 *ngIf="loading">Loading...</h1>
 
+<div *ngIf="backendless && !project.data" class="backendless">
+  <h1>ngxe editor</h1>
+  <button appFileHolder class="import">
+    <input
+      (select)="loadFromFile($event)"
+      appFile
+      type="file"
+    >
+    📥 Load project
+  </button>
+  <p>
+    Project it is a "*.ngxe-project.json" file.<br>
+    You can generate it from your sources using ngxe.<br>
+    <a href="https://github.com/navix/ngxe">More info</a>
+  </p>
+</div>
+
 <ng-container *ngIf="project.data && project.currentTranslation">
   <div class="head">
     <div class="main">
@@ -13,7 +30,21 @@
         >
           {{ translation.locale }}
         </button>
-        <button (click)="save()">💾 Save Project</button>
+        <ng-container *ngIf="backendless">
+          <button (click)="export()">💾 Save Project</button>
+        </ng-container>
+        <ng-container *ngIf="!backendless">
+          <button (click)="save()">💾 Save Project</button>
+          <button (click)="export()">📤 Export</button>
+          <button appFileHolder class="import">
+            <input
+              (select)="import($event)"
+              appFile
+              type="file"
+            >
+            📥 Import
+          </button>
+        </ng-container>
         <div>
         </div>
       </div>

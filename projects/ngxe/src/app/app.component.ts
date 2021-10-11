@@ -1,5 +1,7 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
+import { saveAs } from 'file-saver';
 import { finalize } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 import { Project } from './project';
 
 const themeStorageKey = '_THEME';
@@ -10,13 +12,11 @@ const themeStorageKey = '_THEME';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  backendless = environment.backendless;
+
   loading = false;
 
   themeClass = '-light';
-
-  @HostBinding('class') get classBinding() {
-    return this.themeClass;
-  }
 
   constructor(
     public project: Project,
@@ -24,25 +24,18 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading = true;
-    this.project
-      .load()
-      .pipe(
-        finalize(() => this.loading = false),
-      )
-      .subscribe(
-        () => {
-        },
-        err => {
-          alert(`API error! The ngxe is still running?`);
-          console.error(err);
-        },
-      );
+    if (!this.backendless) {
+      this.loadFromBackend();
+    }
     // load local settings
     const theme = localStorage.getItem(themeStorageKey);
     if (theme) {
       this.themeClass = theme;
     }
+  }
+
+  @HostBinding('class') get classBinding() {
+    return this.themeClass;
   }
 
   save() {
@@ -62,5 +55,46 @@ export class AppComponent implements OnInit {
 
   saveTheme(theme: string) {
     localStorage.setItem(themeStorageKey, theme);
+  }
+
+  export() {
+    const dataJson = JSON.stringify(this.project.data);
+    const blob = new Blob([dataJson], {
+      type: 'text/plain;charset=utf-8',
+    });
+    saveAs(blob, `${this.project.data?.config.name}.ngxe-project.json`);
+  }
+
+  async import(files: any[]) {
+    try {
+      this.project.import(JSON.parse(files[0].data));
+    } catch (e) {
+      alert('Error: ' + e.error);
+    }
+  }
+
+  loadFromFile(files: any[]) {
+    try {
+      this.project.loadFromFile(JSON.parse(files[0].data));
+    } catch (e) {
+      alert('Error: ' + e.error);
+    }
+  }
+
+  private loadFromBackend() {
+    this.loading = true;
+    this.project
+      .load()
+      .pipe(
+        finalize(() => this.loading = false),
+      )
+      .subscribe(
+        () => {
+        },
+        err => {
+          alert(`API error! The ngxe is still running?`);
+          console.error(err);
+        },
+      );
   }
 }
