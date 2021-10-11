@@ -119,7 +119,7 @@ export class Project {
       }
       for (const key of Object.keys(importTranslation.translations)) {
         const importValue = importTranslation.translations[key];
-        if (this.data.input.translations[key]) {
+        if (importValue && this.data.input.translations[key]) {
           translation.translations[key] = importValue;
         }
       }
