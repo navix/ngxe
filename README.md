@@ -24,7 +24,7 @@ A simple UI for your translations: hosted on NPM, runs on your dev machine.
 ## Installation
 
 ```shell
-$ npm i @novyk/ngxe -D
+$ npm i ngxe -D
 ```
 
 
