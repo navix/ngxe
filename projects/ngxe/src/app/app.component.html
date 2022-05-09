@@ -7,8 +7,9 @@
       (select)="loadFromFile($event)"
       appFile
       type="file"
+      accept="application/json"
     >
-    📥 Load project
+    📥 Import Project from JSON
   </button>
   <p>
     Project it is a "*.ngxe-project.json" file.<br>
@@ -30,20 +31,31 @@
         >
           {{ translation.locale }}
         </button>
-        <ng-container *ngIf="backendless">
-          <button (click)="export()">💾 Save Project</button>
-        </ng-container>
+        |
+        <button (click)="exportCsv()">📤 Export <strong>{{ project.currentTranslation.locale }}</strong> to CSV</button>
+        <button appFileHolder>
+          <input
+            (select)="importCsv($event)"
+            appFile
+            type="file"
+            accept="text/csv"
+          >
+          📥 Import <strong>{{ project.currentTranslation.locale }}</strong> from CSV
+        </button>
+        |
+        <button (click)="export()">📤 Export Project to JSON</button>
+        <button appFileHolder>
+          <input
+            (select)="import($event)"
+            appFile
+            type="file"
+            accept="application/json"
+          >
+          📥 Import Project from JSON
+        </button>
         <ng-container *ngIf="!backendless">
+         |
           <button (click)="save()">💾 Save Project</button>
-          <button (click)="export()">📤 Export</button>
-          <button appFileHolder>
-            <input
-              (select)="import($event)"
-              appFile
-              type="file"
-            >
-            📥 Import
-          </button>
         </ng-container>
         <div>
         </div>

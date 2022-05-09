@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "ngxe:start": "ng run ngxe:serve --proxy-config proxy.conf.json",
+    "ngxe:start:demo": "ng run ngxe:serve:demo",
     "ngxe:build": "ng run ngxe:build:production",
     "ngxe:build:demo": "ng run ngxe:build:demo",
     "test": "ng run ngxe:test",

@@ -5,6 +5,8 @@ import { JsonFile, JsonFileTranslations } from '../../../meta/formats';
 import { Api } from './api';
 import { TableRow, TableRowType, TableStats } from './meta';
 import { extractPlaceholders } from './placeholders/extract-placeholders';
+import { escapeForCsv, removeEscapeForCsv } from './util/escape-for-csv';
+import { parseCsv } from './util/parse-csv';
 
 const typesWeight: { [key in TableRowType]: number } = {
   new: 3,
@@ -124,13 +126,45 @@ export class Project {
         }
       }
     }
-    console.log('UPDTD', this.data);
     this.setCurrent(this.data.output.translations[0].locale);
   }
 
   loadFromFile(data: Api_GetProject) {
     this.data = data;
     this.setCurrent(this.data.output.translations[0].locale);
+  }
+
+  /**
+   * Return CSV from state of table (only for a current locale).
+   */
+  getCsvFromTable() {
+    if (!this.table) {
+      return '';
+    }
+    const rows = this.table
+      .filter(row => row.type !== 'deleted')
+      .map(row => {
+        return `${row.id},${escapeForCsv(row.current)},${escapeForCsv(row.target)}`;
+      })
+      .join('\n');
+    return 'ID,Current,Target\n' + rows;
+  }
+
+  importFromCsv(csv: string) {
+    const parsed = parseCsv(csv);
+    parsed.shift();
+    console.log('Parsed', parsed);
+    let changed = 0;
+    for (const row of parsed) {
+      const from = this.currentTranslation!.translations[row[0]];
+      const to = removeEscapeForCsv(row[2]);
+      if (to && from !== to) {
+        console.log('IMPORT UPDATE', row[0], {from, to: to});
+        this.currentTranslation!.translations[row[0]] = to;
+        changed++;
+      }
+    }
+    return changed;
   }
 
   private compileTable({inputSource, outputSource, translation}: {

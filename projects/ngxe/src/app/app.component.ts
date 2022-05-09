@@ -81,6 +81,22 @@ export class AppComponent implements OnInit {
     }
   }
 
+  exportCsv() {
+    const blob = new Blob([this.project.getCsvFromTable()], {
+      type: 'text/csv;charset=utf-8',
+    });
+    saveAs(blob, `${this.project.data!.config.name}_${this.project.currentTranslation!.locale}.csv`);
+  }
+
+  importCsv(files: any[]) {
+    try {
+      const changed = this.project.importFromCsv(files[0].data);
+      alert(`Import completed. Changed ${changed} rows.`);
+    } catch (e) {
+      alert('Error: ' + e.error);
+    }
+  }
+
   private loadFromBackend() {
     this.loading = true;
     this.project

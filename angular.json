@@ -243,6 +243,9 @@
           "configurations": {
             "production": {
               "browserTarget": "ngxe:build:production"
+            },
+            "demo": {
+              "browserTarget": "ngxe:build:demo"
             }
           }
         },
