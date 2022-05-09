@@ -1,4 +1,4 @@
-[![npm version](https://badge.fury.io/js/%40novyk%2Fngxe.svg)](https://www.npmjs.com/@novyk/ngxe)
+[![npm version](https://badge.fury.io/js/ngxe.svg)](https://www.npmjs.com/package/ngxe)
 ![CI](https://github.com/navix/ngxe/actions/workflows/ci.yml/badge.svg)
 
 # 📜 ngxe
@@ -24,7 +24,7 @@ A simple UI for your translations: hosted on NPM, runs on your dev machine.
 ## Installation
 
 ```shell
-$ npm i @novyk/ngxe -D
+$ npm i ngxe -D
 ```
 
 
