@@ -16,8 +16,6 @@ A simple UI for your translations: hosted on NPM, runs on your dev machine.
 * Suggestions based on similar sources.
 * Themes: light, solarized, dark.
 
-### [The front app demo — ngxe.oleksanovyk.com](https://ngxe.oleksanovyk.com/)
-
 ![ngxe screenshop](./screenshot.png)
 
 
@@ -35,13 +33,13 @@ $ npm i ngxe -D
 ```json
 {
   "name": "Project Name",
-  "input": "messages.json",
+  "input": "path/to/messages.json",
   "output": {
-    "source": "messages.en.json",
+    "source": "path/to/messages.en.json",
     "translations": [
       {
         "locale": "de",
-        "path": "messages.de.json"
+        "path": "path/to/messages.de.json"
       }
     ]
   }
@@ -131,3 +129,8 @@ Make sure you have the `target-language` attribute in `xlf` file:
 ```
 
 After that you can delete `@locl/cli` package. 
+
+
+## [Online editor — ngxe.oleksanovyk.com](https://ngxe.oleksanovyk.com/)
+
+Useful for delegating translation process.
