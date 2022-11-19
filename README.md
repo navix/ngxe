@@ -35,7 +35,7 @@ $ npm i ngxe -D
   "name": "Project Name",
   "input": "path/to/messages.json",
   "output": {
-    "source": "path/to/messages.en.json",
+    "source": "path/to/messages.source.json",
     "translations": [
       {
         "locale": "de",
@@ -133,4 +133,4 @@ After that you can delete `@locl/cli` package.
 
 ## [Online editor — ngxe.oleksanovyk.com](https://ngxe.oleksanovyk.com/)
 
-Useful for delegating translation process.
+Useful for delegating translation process. Use "Export"/"Import" options at the ngxe dashboard.
