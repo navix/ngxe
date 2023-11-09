@@ -1,11 +1,11 @@
 {
   "name": "ngxe",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Angular 11.1+ JSON Translations Editor.",
   "keywords": ["angular", "cli", "i18n", "translations"],
   "author": {
     "name": "Oleksa Novyk",
-    "email": "oleksa@novyk.me",
+    "email": "hey@oleksanovyk.com",
     "url": "https://oleksanovyk.com/"
   },
   "license": "MIT",
@@ -17,8 +17,8 @@
     "ngxe": "./bin/ngxe"
   },
   "dependencies": {
-    "ajv": "7.1.0",
-    "better-ajv-errors": "0.7.0",
+    "ajv": "8.12.0",
+    "better-ajv-errors": "1.2.0",
     "fastify": "3.10.1",
     "fastify-disablecache": "1.0.3",
     "fastify-static": "3.4.0",
