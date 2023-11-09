@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
   async import(files: any[]) {
     try {
       this.project.import(JSON.parse(files[0].data));
-    } catch (e) {
+    } catch (e: any) {
       alert('Error: ' + e.error);
     }
   }
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
   loadFromFile(files: any[]) {
     try {
       this.project.loadFromFile(JSON.parse(files[0].data));
-    } catch (e) {
+    } catch (e: any) {
       alert('Error: ' + e.error);
     }
   }
