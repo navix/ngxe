@@ -8,7 +8,7 @@ import { Api_Error, Api_GetProject } from '../meta/api';
 import { Config, configSchema } from '../meta/config';
 import { loadJson } from './load-json';
 import { saveJson } from './save-json';
-import betterAjvErrors = require('better-ajv-errors');
+import betterAjvErrors from 'better-ajv-errors';
 
 const cli = meow(`
   📜 ngxe
@@ -44,7 +44,7 @@ const ajv = new Ajv({
   useDefaults: true,
 });
 const validate = ajv.compile(configSchema);
-if (!validate(config)) {
+if (!validate(config) && validate.errors) {
   console.log(betterAjvErrors(configSchema, config, validate.errors));
   process.exit(1);
 }

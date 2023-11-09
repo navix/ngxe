@@ -17,6 +17,7 @@
     "target": "es2015",
     "module": "es2020",
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "lib": [
       "es2020",
       "dom"

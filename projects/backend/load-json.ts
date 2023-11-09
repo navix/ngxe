@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 import { configSchema } from '../meta/config';
 import { JsonFile, jsonFileSchema } from '../meta/formats';
-import betterAjvErrors = require('better-ajv-errors');
+import betterAjvErrors from 'better-ajv-errors';
 
 export function loadJson({path, shouldExist = true, forceLocale}: {
   path: string;
@@ -25,7 +25,7 @@ export function loadJson({path, shouldExist = true, forceLocale}: {
 
     const ajv = new Ajv();
     const validate = ajv.compile(jsonFileSchema);
-    if (!validate(json)) {
+    if (!validate(json) && validate.errors) {
       const errors = betterAjvErrors(configSchema, json, validate.errors, {format: 'js'});
       throw new Error(`Schema errors: ${errors ? errors.map(e => e.error) : 'NO_DATA'}`);
     }
