@@ -11,7 +11,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       -
         name: Build
         run: |
@@ -22,7 +22,7 @@ jobs:
       -
         name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: gh-pages
           build_dir: dist/ngxe
