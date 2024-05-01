@@ -2,6 +2,7 @@ import Ajv from 'ajv';
 import fastify from 'fastify';
 import { existsSync, readFileSync } from 'fs';
 import * as meow from 'meow';
+import * as child_process from 'node:child_process';
 import * as open from 'open';
 import { resolve } from 'path';
 import { Api_Error, Api_GetProject } from '../meta/api';
@@ -61,6 +62,16 @@ app.register(async app => {
       if (!input) {
         throw new Error(`loadJson should throw Error before!`);
       }
+      // Get current git branch name
+      let branch = '';
+      try {
+        const stdout = child_process.execSync('git rev-parse --abbrev-ref HEAD', {encoding: 'utf8'});
+        console.log('stdout', stdout);
+        branch = stdout?.trim();
+      } catch (e) {
+        console.log('Error getting git branch:', e);
+      }
+
       return {
         success: true,
         config,
@@ -81,6 +92,7 @@ app.register(async app => {
               translations: {},
             }),
         },
+        branch,
       };
     } catch (e) {
       return {

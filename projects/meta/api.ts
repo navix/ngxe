@@ -14,4 +14,5 @@ export interface Api_GetProject {
     source: JsonFile;
     translations: JsonFile[];
   };
+  branch?: string;
 }
