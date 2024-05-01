@@ -80,23 +80,23 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "demo:build"
+            "buildTarget": "demo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "demo:build:production"
+              "buildTarget": "demo:build:production"
             },
             "uk": {
-              "browserTarget": "demo:build:uk"
+              "buildTarget": "demo:build:uk"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "demo:build",
             "format": "json",
-            "outputPath": "projects/demo/i18n"
+            "outputPath": "projects/demo/i18n",
+            "buildTarget": "demo:build"
           }
         },
         "test": {
@@ -225,18 +225,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngxe:build"
+            "buildTarget": "ngxe:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngxe:build:production"
+              "buildTarget": "ngxe:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngxe:build"
+            "buildTarget": "ngxe:build"
           }
         },
         "test": {
