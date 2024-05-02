@@ -1,9 +1,8 @@
 import Ajv from 'ajv';
 import fastify from 'fastify';
 import { existsSync, readFileSync } from 'fs';
-import * as meow from 'meow';
+import meow from 'meow';
 import * as child_process from 'node:child_process';
-import * as open from 'open';
 import { resolve } from 'path';
 import { Api_Error, Api_GetProject } from '../meta/api';
 import { Config, configSchema } from '../meta/config';
@@ -37,7 +36,7 @@ if (!existsSync(configPath)) {
 let config: Config;
 try {
   config = JSON.parse(readFileSync(configPath, {encoding: 'utf8'}));
-} catch (e) {
+} catch (e: any) {
   throw new Error(`Can't load and parse config file: ${e.message}.`);
 }
 
@@ -94,7 +93,7 @@ app.register(async app => {
         },
         branch,
       };
-    } catch (e) {
+    } catch (e: any) {
       return {
         success: false,
         message: `Project reading error: ${e.message}.`,
@@ -130,20 +129,21 @@ app.register(async app => {
 
 app.register(require('fastify-disablecache'));
 
-app.register(require('fastify-static'), {
+app.register(require('@fastify/static'), {
   root: resolve(__dirname, '../../ngxe'),
   prefix: '/',
 });
 
 const url = `http://localhost:${config.port}`;
-app.listen(config.port, '0.0.0.0', (err) => {
+app.listen(config.port, '0.0.0.0', async (err) => {
   if (err) {
     throw err;
   }
   app.log.info(`📜 ngxe working on ${url}`);
 
   if (config.open) {
-    open(url).then(() => {
+    const open = await import('open');
+    open.default(url).then(() => {
     });
   }
 });

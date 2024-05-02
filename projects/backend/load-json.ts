@@ -34,7 +34,7 @@ export function loadJson({path, shouldExist = true, forceLocale}: {
       locale: forceLocale ?? json.locale,
       translations: json.translations,
     };
-  } catch (e) {
+  } catch (e: any) {
     throw new Error(`Can't load and parse file ${rPath}: ${e.message}`);
   }
 }
