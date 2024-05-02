@@ -49,7 +49,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
   pageRows: TableRow[] = [];
 
-  #destroy = new Subject();
+  #destroy = new Subject<void>();
 
   ngOnInit() {
     this.headForm.valueChanges

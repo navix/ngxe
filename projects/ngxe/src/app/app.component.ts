@@ -1,7 +1,11 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import {Component, HostBinding, inject, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import { saveAs } from 'file-saver';
-import { finalize } from 'rxjs/operators';
+import {EMPTY} from 'rxjs';
+import {catchError, finalize} from 'rxjs/operators';
+import {formatExchangeFile} from '../../../meta/format-exchange-file';
 import { environment } from '../environments/environment';
+import {ExchangeService} from './exchange.service';
 import { Project } from './project';
 
 const themeStorageKey = '_THEME';
@@ -12,6 +16,9 @@ const themeStorageKey = '_THEME';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  exchange = inject(ExchangeService);
+  route = inject(ActivatedRoute);
+
   backendless = environment.backendless;
 
   loading = false;
@@ -21,16 +28,22 @@ export class AppComponent implements OnInit {
   constructor(
     public project: Project,
   ) {
-  }
-
-  ngOnInit() {
-    if (!this.backendless) {
-      this.loadFromBackend();
-    }
     // load local settings
     const theme = localStorage.getItem(themeStorageKey);
     if (theme) {
       this.themeClass = theme;
+    }
+  }
+
+  ngOnInit() {
+    const {exp, exb} = this.route.snapshot.queryParams;
+    if (exp && exb) {
+      this.loadFromExchange(exp, exb, true);
+      return;
+    }
+
+    if (!this.backendless) {
+      this.loadFromBackend();
     }
   }
 
@@ -67,7 +80,7 @@ export class AppComponent implements OnInit {
 
   async import(files: any[]) {
     try {
-      this.project.import(JSON.parse(files[0].data));
+      this.project.mergeImport(JSON.parse(files[0].data));
     } catch (e: any) {
       alert('Error: ' + e.error);
     }
@@ -96,5 +109,48 @@ export class AppComponent implements OnInit {
           console.error(err);
         },
       );
+  }
+
+  saveToExchange() {
+    this.exchange
+      .saveProject({
+        project: this.project.data!.config.name,
+        branch: this.project.data!.branch || '',
+        body: this.project.data,
+      })
+      .subscribe(res => {
+        if (res) {
+          alert(`Project saved. Sharing URL: https://ngxe.oleksanovyk.com/?exp=${formatExchangeFile(this.project.data!.config.name)}&exb=${formatExchangeFile(this.project.data!.branch)}`);
+        } else {
+          alert('Save failed!');
+        }
+      });
+  }
+
+  loadFromExchange(project?: string, branch?: string, force = false) {
+    if (!force && !confirm('Current unsaved changes will be lost. Continue?')) {
+      return;
+    }
+    this.loading = true;
+    this.exchange
+      .loadProject({
+        project: project || this.project.data!.config.name,
+        branch: branch || this.project.data!.branch || '',
+      })
+      .pipe(
+        finalize(() => this.loading = false),
+        catchError(err => {
+          alert(`Exchange API error!`);
+          console.error(err);
+          return EMPTY;
+        }),
+      )
+      .subscribe(res => {
+        if (res.success) {
+          this.project.fullImport(res)
+        } else {
+          alert(`Exchange API error!`);
+        }
+      });
   }
 }

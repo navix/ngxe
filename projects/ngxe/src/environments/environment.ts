@@ -1,6 +1,8 @@
 export const environment = {
   production: false,
   backendless: false,
+  exchangeUrl: 'http://localhost:3080',
+//  exchangeUrl: 'https://ngxe-exchange.oleksanovyk.com',
 };
 
 /*

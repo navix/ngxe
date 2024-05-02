@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "node16",
+    "target": "ES2022",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": false,
+    "incremental": true,
+    "outDir": "../../dist/exchange",
+    "baseUrl": "./",
+    "resolveJsonModule": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "typeRoots": ["node_modules/@types"],
+    "skipLibCheck": true,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["ES2023"]
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

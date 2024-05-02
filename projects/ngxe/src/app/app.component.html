@@ -20,7 +20,7 @@
 <ng-container *ngIf="project.data && project.currentTranslation">
   <div class="head">
     <div class="main">
-      <h1 class="title">{{ project.data.config.name }}</h1>
+      <h1 class="title">{{ project.data.config.name }} / {{ project.data.branch }}</h1>
       <div class="actions">
         Locales:
         <button
@@ -30,23 +30,22 @@
         >
           {{ translation.locale }}
         </button>
-        <ng-container *ngIf="backendless">
-          <button (click)="export()">💾 Save Project</button>
-        </ng-container>
-        <ng-container *ngIf="!backendless">
+        @if (!backendless) {
           <button (click)="save()">💾 Save Project</button>
-          <button (click)="export()">📤 Export</button>
-          <button appFileHolder>
-            <input
-              (select)="import($event)"
-              appFile
-              type="file"
-            >
-            📥 Import
-          </button>
-        </ng-container>
-        <div>
-        </div>
+        }
+        |
+        <button (click)="saveToExchange()">📤 Save to Exchange</button>
+        <button (click)="loadFromExchange()">📥 Load from Exchange</button>
+        |
+        <button (click)="export()">💾 Save to file</button>
+        <button appFileHolder>
+          <input
+            (select)="import($event)"
+            appFile
+            type="file"
+          >
+          📂 Load from file
+        </button>
       </div>
     </div>
     <div class="side">

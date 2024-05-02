@@ -332,6 +332,7 @@ class ApiStub {
         },
       ],
     },
+    branch: '',
   };
 
   getProject() {

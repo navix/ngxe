@@ -56,6 +56,7 @@ export class Project {
                 translations: this.processTranslationsObject(t.translations),
               })),
             },
+            branch: res.branch,
           };
           if (!this.data.output.translations.length) {
             alert('Config have no translations!');
@@ -108,7 +109,7 @@ export class Project {
     return this.api.postProject(body);
   }
 
-  import(data: Api_GetProject) {
+  mergeImport(data: Api_GetProject) {
     if (!this.data) {
       return;
     }
@@ -124,13 +125,21 @@ export class Project {
         }
       }
     }
-    console.log('UPDTD', this.data);
+    this.setCurrent(this.data.output.translations[0].locale);
+  }
+
+  fullImport(data: Api_GetProject) {
+    this.data = data;
     this.setCurrent(this.data.output.translations[0].locale);
   }
 
   loadFromFile(data: Api_GetProject) {
     this.data = data;
     this.setCurrent(this.data.output.translations[0].locale);
+  }
+
+  exportToExchange() {
+
   }
 
   private compileTable({inputSource, outputSource, translation}: {

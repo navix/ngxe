@@ -16,6 +16,7 @@
     "exchange:start": "node dist/exchange/exchange/app",
     "exchange:build": "tsc --project ./projects/exchange/tsconfig.json",
     "exchange:build:watch": "rimraf ./dist/exchange && tsc --project ./projects/exchange/tsconfig.json --watch",
+    "exchange:deploy": "docker build -t ghcr.io/navix/ngxe/exchange -f projects/exchange/Dockerfile . && docker push ghcr.io/navix/ngxe/exchange",
     "release:build": "npm run ngxe:build && npm run backend:build",
     "release": "npm run release:build && node release.js"
   },
@@ -30,6 +31,7 @@
     "@angular/platform-browser": "^17.3.7",
     "@angular/platform-browser-dynamic": "^17.3.7",
     "@angular/router": "^17.3.7",
+    "@fastify/cors": "^9.0.1",
     "@fastify/static": "^7.0.3",
     "ajv": "^8.13.0",
     "better-ajv-errors": "1.2.0",
