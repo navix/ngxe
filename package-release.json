@@ -1,6 +1,6 @@
 {
   "name": "ngxe",
-  "version": "1.3.0",
+  "version": "1.3.3",
   "description": "Angular 11.1+ JSON Translations Editor.",
   "keywords": ["angular", "cli", "i18n", "translations"],
   "author": {
