@@ -6,7 +6,7 @@ import {formatExchangeFile} from '../meta/format-exchange-file';
 
 const app = fastify({
   logger: true,
-  bodyLimit: 10 * 10000, // X * MB
+  bodyLimit: 10 * 1000000, // X * MB
 });
 
 const projectsPath = resolve(__dirname, 'projects');
