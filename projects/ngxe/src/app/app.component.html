@@ -1,80 +1,84 @@
-<h1 *ngIf="loading">Loading...</h1>
-
-<div *ngIf="backendless && !project.data" class="backendless">
-  <h1>ngxe editor</h1>
-  <button appFileHolder>
-    <input
-      (select)="loadFromFile($event)"
-      appFile
-      type="file"
-    >
-    📥 Load project
-  </button>
-  <p>
-    Project it is a "*.ngxe-project.json" file.<br>
-    You can generate it from your sources using ngxe.<br>
-    <a href="https://github.com/navix/ngxe">More info</a>
-  </p>
-</div>
-
-<ng-container *ngIf="project.data && project.currentTranslation">
-  <div class="head">
-    <div class="main">
-      <h1 class="title">{{ project.data.config.name }} / {{ project.data.branch }}</h1>
-      <div class="actions">
-        Locales:
-        <button
-          (click)="project.setCurrent(translation.locale)"
-          *ngFor="let translation of project.data.output.translations"
-          [class.-active]="translation.locale === project.currentTranslation.locale"
+@if (loading) {
+  <h1>Loading...</h1>
+} @else {
+  @if (backendless && !project.data) {
+    <div class="backendless">
+      <h1>ngxe editor</h1>
+      <button appFileHolder>
+        <input
+          (select)="loadFromFile($event)"
+          appFile
+          type="file"
         >
-          {{ translation.locale }}
-        </button>
-        @if (!backendless) {
-          <button (click)="save()">💾 Save Project</button>
-        }
-        |
-        <button (click)="saveToExchange()">📤 Save to Exchange</button>
-        <button (click)="loadFromExchange()">📥 Load from Exchange</button>
-        |
-        <button (click)="export()">💾 Save to file</button>
-        <button appFileHolder>
-          <input
-            (select)="import($event)"
-            appFile
-            type="file"
-          >
-          📂 Load from file
-        </button>
-      </div>
+        📥 Load project
+      </button>
+      <p>
+        Project it is a "*.ngxe-project.json" file.<br>
+        You can generate it from your sources using ngxe.<br>
+        <a href="https://github.com/navix/ngxe">More info</a>
+      </p>
     </div>
-    <div class="side">
-      <select (ngModelChange)="saveTheme($event)" [(ngModel)]="themeClass" class="theme-picker" name="theme">
-        <option value="-light">Light theme</option>
-        <option value="-solar">Solar theme</option>
-        <option value="-dark">Dark theme</option>
-      </select>
-      <div class="stats">
-        <div>Current locale: <b>{{ project.currentTranslation.locale }}</b></div>
-        <div>Total messages: <b>{{ project.stats.total }}</b></div>
-        <div>
-          New:
-          <b>{{ project.stats.new }}</b>,
-          Changed: <b>{{ project.stats.changed }}</b>,
-          Deleted: <b>{{ project.stats.deleted }}</b>,
-          No translations: <b>{{ project.stats.emptyTarget }}</b>
+  }
+
+  @if (project.data && project.currentTranslation) {
+    <div class="head">
+      <div class="main">
+        <h1 class="title">{{ project.data.config.name }} / {{ project.data.branch }}</h1>
+        <div class="actions">
+          Locales:
+          <button
+            (click)="project.setCurrent(translation.locale)"
+            *ngFor="let translation of project.data.output.translations"
+            [class.-active]="translation.locale === project.currentTranslation.locale"
+          >
+            {{ translation.locale }}
+          </button>
+          @if (!backendless) {
+            <button (click)="save()">💾 Save Project</button>
+          }
+          |
+          <button (click)="saveToExchange()">📤 Save to Exchange</button>
+          <button (click)="loadFromExchange()">📥 Load from Exchange</button>
+          |
+          <button (click)="export()">💾 Save to file</button>
+          <button appFileHolder>
+            <input
+              (select)="import($event)"
+              appFile
+              type="file"
+            >
+            📂 Load from file
+          </button>
+        </div>
+      </div>
+      <div class="side">
+        <select (ngModelChange)="saveTheme($event)" [(ngModel)]="themeClass" class="theme-picker" name="theme">
+          <option value="-light">Light theme</option>
+          <option value="-solar">Solar theme</option>
+          <option value="-dark">Dark theme</option>
+        </select>
+        <div class="stats">
+          <div>Current locale: <b>{{ project.currentTranslation.locale }}</b></div>
+          <div>Total messages: <b>{{ project.stats.total }}</b></div>
+          <div>
+            New:
+            <b>{{ project.stats.new }}</b>,
+            Changed: <b>{{ project.stats.changed }}</b>,
+            Deleted: <b>{{ project.stats.deleted }}</b>,
+            No translations: <b>{{ project.stats.emptyTarget }}</b>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <app-table
-    *ngIf="project.table && project.stats && project.currentTranslation"
-    [currentTranslation]="project.currentTranslation"
-    [stats]="project.stats"
-    [table]="project.table"
-    class="table"
-  >
-    Crafted by Oleksa Novyk.
-    <a href="https://github.com/navix/ngxe" target="_blank">GitHub</a>.
-  </app-table>
-</ng-container>
+    <app-table
+      *ngIf="project.table && project.stats && project.currentTranslation"
+      [currentTranslation]="project.currentTranslation"
+      [stats]="project.stats"
+      [table]="project.table"
+      class="table"
+    >
+      Crafted by Oleksa Novyk.
+      <a href="https://github.com/navix/ngxe" target="_blank">GitHub</a>.
+    </app-table>
+  }
+}
