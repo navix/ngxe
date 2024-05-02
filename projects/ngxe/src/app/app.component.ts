@@ -118,6 +118,13 @@ export class AppComponent implements OnInit {
         branch: this.project.data!.branch || '',
         body: this.project.data,
       })
+      .pipe(
+        catchError(err => {
+          alert(`Exchange API error!`);
+          console.error(err);
+          return EMPTY;
+        }),
+      )
       .subscribe(res => {
         if (res) {
           alert(`Project saved. Sharing URL: https://ngxe.oleksanovyk.com/?exp=${formatExchangeFile(this.project.data!.config.name)}&exb=${formatExchangeFile(this.project.data!.branch)}`);
